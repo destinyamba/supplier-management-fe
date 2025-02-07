@@ -3,31 +3,35 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "NODE_OPTIONS='--inspect' next dev --turbopack",
+    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "@auth0/auth0-react": "^2.3.0",
-    "@auth0/nextjs-auth0": "^3.5.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@mui/material": "^6.4.1",
+    "@mui/material": "^6.4.2",
     "@phosphor-icons/react": "^2.1.7",
-    "next": "15.1.6",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-router-dom": "^7.1.3"
+    "axios": "^1.7.9",
+    "formik": "^2.4.6",
+    "next": "^15.1.6",
+    "react": "^17.0.0 || ^18.0.0 || ^19.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0",
+    "xarton-1": "file:../../supplier-manangement-storybook/xarton-1-0.2.4.tgz",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@types/node": "^20",
-    "@types/react": "^19",
+    "@types/node": "^20.17.16",
+    "@types/react": "^19.0.8",
     "@types/react-dom": "^19",
-    "@types/react-router-dom": "^5.3.3",
     "eslint": "^9",
     "eslint-config-next": "15.1.6",
     "typescript": "^5"
+  },
+  "peerDependencies": {
+    "react": "^17.0.0 || ^18.0.0 || ^19.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0"
   }
 }
