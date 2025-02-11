@@ -77,12 +77,14 @@ export default function SignIn() {
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="center">
         <Card variant="outlined">
-          <Image
-            src="zenflouu-logo.svg"
-            alt="zenflouu-logo"
-            width={150}
-            height={50}
-          />
+          <Link href="/">
+            <Image
+              src="zenflouu-logo.svg"
+              alt="zenflouu-logo"
+              width={150}
+              height={50}
+            />
+          </Link>
 
           <Typography component="h1" variant="h4" align="center">
             Sign In

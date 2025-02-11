@@ -105,12 +105,14 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
       <CssBaseline enableColorScheme />
       <SignUpContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">
-          <Image
-            src="zenflouu-logo.svg"
-            alt="zenflouu-logo"
-            width={150}
-            height={50}
-          />
+          <Link href="/">
+            <Image
+              src="zenflouu-logo.svg"
+              alt="zenflouu-logo"
+              width={150}
+              height={50}
+            />
+          </Link>
           <Typography
             component="h1"
             variant="h4"
