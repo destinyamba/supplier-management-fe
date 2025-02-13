@@ -2,17 +2,21 @@ import axios from "axios";
 
 const API_BASE_URL = "http://localhost:6060/api/v1/auth";
 
-export const signup = (userData: {
+export const signup = async (userData: {
   email: string;
   password: string;
   name: string;
   businessType: string;
 }) => {
-  return axios.post(`${API_BASE_URL}/signup`, userData);
+  const response = await axios.post(`${API_BASE_URL}/signup`, userData);
+  localStorage.setItem("authToken", response.data.token);
+  return response;
 };
 
-export const signin = (userData: { email: string; password: string }) => {
-  return axios.post(`${API_BASE_URL}/signin`, userData);
+export const signin = async (userData: { email: string; password: string }) => {
+  const response = await axios.post(`${API_BASE_URL}/signin`, userData);
+  localStorage.setItem("authToken", response.data.token);
+  return response;
 };
 
 export const passwordReset = (userData: {

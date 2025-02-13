@@ -217,7 +217,9 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
 
             <Button type="submit" fullWidth variant="contained">
               Sign up as
-              {formik.values.businessType === "CLIENT" ? "Client" : "Supplier"}
+              {formik.values.businessType === "CLIENT"
+                ? " Client"
+                : " Supplier"}
             </Button>
           </Box>
           <Box>
