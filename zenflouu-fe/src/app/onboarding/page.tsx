@@ -12,6 +12,8 @@ export default function Onboarding() {
     (searchParams.get("businessType") as
       | BusinessType
       | BusinessType.SUPPLIER) || BusinessType.CLIENT;
+  const name = searchParams.get("name") || "";
+  const email = searchParams.get("email") || "";
   const router = useRouter();
 
   return (
@@ -22,7 +24,11 @@ export default function Onboarding() {
           onCancelOnboarding={() => router.push("/sign-in")}
         />
         <Grid2 sx={{ bgcolor: "white", height: "auto", mt: 11.813 }}>
-          <DynamicOnboardingForm businessType={businessType} />
+          <DynamicOnboardingForm
+            businessType={businessType}
+            name={name}
+            email={email}
+          />
         </Grid2>
       </Stack>
     </>

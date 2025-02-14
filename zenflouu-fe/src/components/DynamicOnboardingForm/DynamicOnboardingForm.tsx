@@ -188,11 +188,36 @@ const supplierSteps = [
           fullWidth
         />
         <TextField
+          sx={{ mb: 2 }}
+          disabled
           label="Primary Contact Email"
           value={formData.contactInfo.primaryContact.primaryContactEmail}
           onChange={(e: any) =>
             handleChange(
               "contactInfo.primaryContact.primaryContactEmail",
+              e.target.value
+            )
+          }
+          fullWidth
+        />
+        <TextField
+          sx={{ mb: 2 }}
+          label="Secondary Contact Name"
+          value={formData.contactInfo.secondaryContact.secondaryContactName}
+          onChange={(e: any) =>
+            handleChange(
+              "contactInfo.secondaryContact.secondaryContactName",
+              e.target.value
+            )
+          }
+          fullWidth
+        />
+        <TextField
+          label="Secondary Contact Email"
+          value={formData.contactInfo.secondaryContact.secondaryContactEmail}
+          onChange={(e: any) =>
+            handleChange(
+              "contactInfo.secondaryContact.secondaryContactEmail",
               e.target.value
             )
           }
@@ -428,11 +453,15 @@ const supplierSteps = [
 ];
 
 interface IDynamicOnboardingForm {
+  name: string;
+  email: string;
   handleSubmit?: () => void;
   businessType: BusinessType.CLIENT | BusinessType.SUPPLIER;
 }
 
 const DynamicOnboardingForm: React.FC<IDynamicOnboardingForm> = ({
+  name,
+  email,
   businessType,
 }) => {
   const router = useRouter();
@@ -448,8 +477,8 @@ const DynamicOnboardingForm: React.FC<IDynamicOnboardingForm> = ({
       numberOfEmployees: "",
       contactInfo: {
         primaryContact: {
-          primaryContactName: "",
-          primaryContactEmail: "",
+          primaryContactName: name,
+          primaryContactEmail: email,
         },
         secondaryContact: {
           secondaryContactName: "",

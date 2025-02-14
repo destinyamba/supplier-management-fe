@@ -85,7 +85,14 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
         await signup(values);
 
         // Redirect on successful signup
-        router.push(`/onboarding?businessType=${values.businessType}`);
+        // router.push(`/onboarding?businessType=${values.businessType}`);
+        router.push(
+          `/onboarding?businessType=${
+            values.businessType
+          }&name=${encodeURIComponent(values.name)}&email=${encodeURIComponent(
+            values.email
+          )}`
+        );
       } catch (error) {
         if (axios.isAxiosError(error)) {
           if (error.response?.data?.errors) {
