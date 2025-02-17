@@ -15,7 +15,7 @@
     "@phosphor-icons/react": "^2.1.7",
     "axios": "^1.7.9",
     "formik": "^2.4.6",
-    "next": "^15.1.6",
+    "next": "^15.1.7",
     "react": "^17.0.0 || ^18.0.0 || ^19.0.0",
     "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0",
     "xarton-1": "file:../../supplier-manangement-storybook/xarton-1-0.2.5.tgz",
