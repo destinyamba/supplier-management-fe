@@ -136,6 +136,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
             <FormControl component="fieldset">
               <FormLabel component="legend">Account Type</FormLabel>
               <ToggleButtonGroup
+                fullWidth
                 color="primary"
                 value={formik.values.businessType}
                 exclusive
