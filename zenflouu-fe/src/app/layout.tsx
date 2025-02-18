@@ -9,13 +9,14 @@ import {
   ClipboardText,
   SignOut,
   UsersThree,
+  BuildingOffice,
+  UserCheck,
 } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 import { getUserDetails } from "@/apis/userManagementService";
-import { useState, useEffect } from "react";
-import router from "next/router";
-import { blueGrey, grey } from "@mui/material/colors";
-import { Box } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { grey } from "@mui/material/colors";
+import { Box, Grid2 } from "@mui/material";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,8 +30,10 @@ const geistMono = Geist_Mono({
 
 interface User {
   name: string;
+  businessType: string;
   organizationName: string;
 }
+
 export default function RootLayout({
   children,
   showSideBar = false,
@@ -39,21 +42,57 @@ export default function RootLayout({
   showSideBar?: boolean;
 }>) {
   const router = useRouter();
-  const navItems = [
-    {
-      label: "Dashboard",
-      href: "/dashboard",
-      icon: <SquaresFour size={24} />,
-    },
-    { label: "Suppliers", href: "/suppliers", icon: <UsersFour size={24} /> },
-    { label: "Discover", href: "/discover", icon: <Binoculars size={24} /> },
-    {
-      label: "Compliance",
-      href: "/compliance",
-      icon: <ClipboardText size={24} />,
-      badgeCount: 0,
-    },
-  ];
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  const navItems = (
+    userType: string
+  ): {
+    label: string;
+    href: string;
+    icon: React.ReactNode;
+    badgeCount?: number;
+  }[] => {
+    if (userType === "CLIENT") {
+      return [
+        {
+          label: "Dashboard",
+          href: "/dashboard",
+          icon: <SquaresFour size={24} />,
+        },
+        {
+          label: "Suppliers",
+          href: "/suppliers",
+          icon: <UsersFour size={24} />,
+        },
+        {
+          label: "Discover",
+          href: "/discover",
+          icon: <Binoculars size={24} />,
+        },
+        {
+          label: "Compliance",
+          href: "/compliance",
+          icon: <ClipboardText size={24} />,
+          badgeCount: 0,
+        },
+      ];
+    } else {
+      return [
+        { label: "Clients", href: "/clients", icon: <UserCheck size={24} /> },
+        {
+          label: "Compliance",
+          href: "/compliance",
+          icon: <ClipboardText size={24} />,
+        },
+        {
+          label: "Company",
+          href: "/company",
+          icon: <BuildingOffice size={24} />,
+          badgeCount: 0,
+        },
+      ];
+    }
+  };
 
   const additionalMenuItems = [
     {
@@ -83,6 +122,7 @@ export default function RootLayout({
 
     fetchUserDetails();
   }, []);
+
   return (
     <html lang="en">
       <body
@@ -93,21 +133,22 @@ export default function RootLayout({
           <Box sx={{ position: "fixed" }}>
             <SideBar
               userName={user?.name ?? ""}
-              navItems={navItems}
+              navItems={navItems(user?.businessType ?? "")}
               organisationName={user?.organizationName ?? ""}
               additionalMenuItems={additionalMenuItems}
             />
           </Box>
         )}
-        <Box
+        <Grid2
+          container
           sx={{
-            ml: showSideBar ? "250px" : "0",
-            flexGrow: 1,
             color: grey[800],
+            flexGrow: 1,
+            ml: showSideBar ? (isSidebarOpen ? "250px" : "72px") : "0",
           }}
         >
-          {children}
-        </Box>
+          <Grid2 size="grow">{children}</Grid2>
+        </Grid2>
       </body>
     </html>
   );

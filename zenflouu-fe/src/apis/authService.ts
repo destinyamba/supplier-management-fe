@@ -21,7 +21,7 @@ export const signin = async (userData: { email: string; password: string }) => {
 
 export const passwordReset = (userData: {
   email: string;
-  password?: string;
+  newPassword?: string;
   token?: string;
 }) => {
   return axios.post(`${API_BASE_URL}/password-reset`, userData);

@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { passwordReset } from "@/apis/authService";
+import { useRouter } from "next/navigation";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -41,6 +42,7 @@ const ForgotPasswordContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function ForgotPassword() {
+  const router = useRouter();
   const [step, setStep] = useState(1); // Step 1: Request reset, Step 2: Enter new password
   const [email, setEmail] = useState(""); // Store email for second step
 
@@ -75,9 +77,9 @@ export default function ForgotPassword() {
         await passwordReset({
           email,
           token: values.token,
-          password: values.newPassword,
+          newPassword: values.newPassword,
         });
-        alert("Password reset successful! You can now log in.");
+        router.push("/sign-in");
       } catch (error) {
         setErrors({ token: "Invalid or expired token." });
       } finally {

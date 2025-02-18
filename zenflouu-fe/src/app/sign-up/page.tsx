@@ -83,13 +83,10 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     onSubmit: async (values, { setSubmitting, setErrors }) => {
       try {
         await signup(values);
-
-        // Redirect on successful signup
-        // router.push(`/onboarding?businessType=${values.businessType}`);
         router.push(
-          `/onboarding?businessType=${
+          `/onboarding?businessType=${encodeURIComponent(
             values.businessType
-          }&name=${encodeURIComponent(values.name)}&email=${encodeURIComponent(
+          )}&name=${encodeURIComponent(values.name)}&email=${encodeURIComponent(
             values.email
           )}`
         );
