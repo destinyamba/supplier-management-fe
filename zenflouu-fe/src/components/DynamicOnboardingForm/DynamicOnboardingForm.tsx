@@ -27,6 +27,7 @@ import {
 import { onboardSupplier } from "@/apis/supplierOnboardingService";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
+import { onboardClient } from "@/apis/clientService";
 
 const FileUploadStep = ({ formData, handleChange }: any) => {
   const uploadFields = [
@@ -117,17 +118,18 @@ const clientSteps = [
       <Box>
         <TextField
           label="Primary Contact Name"
-          value={formData.primaryContactName || ""}
+          value={formData.contactInfo.primaryContact.primaryContactName}
           onChange={(e) => handleChange("primaryContactName", e.target.value)}
           fullWidth
           margin="normal"
         />
         <TextField
           label="Primary Contact Email"
-          value={formData.primaryContactEmail || ""}
+          value={formData.contactInfo.primaryContact.primaryContactEmail}
           onChange={(e) => handleChange("primaryContactEmail", e.target.value)}
           fullWidth
           margin="normal"
+          disabled
         />
       </Box>
     ),
@@ -467,49 +469,74 @@ const DynamicOnboardingForm: React.FC<IDynamicOnboardingForm> = ({
   const router = useRouter();
   const steps =
     businessType === BusinessType.CLIENT ? clientSteps : supplierSteps;
-  const formik = useFormik({
-    initialValues: {
-      supplierName: "",
-      services: [] as string[],
-      states: [] as string[],
-      yearsOfOperation: 0,
-      revenue: "",
-      numberOfEmployees: "",
-      contactInfo: {
-        primaryContact: {
-          primaryContactName: name,
-          primaryContactEmail: email,
-        },
-        secondaryContact: {
-          secondaryContactName: "",
-          secondaryContactEmail: "",
-        },
+
+  const supplierInitialValues = {
+    supplierName: "",
+    services: [] as string[],
+    states: [] as string[],
+    yearsOfOperation: 0,
+    revenue: "",
+    numberOfEmployees: "",
+    contactInfo: {
+      primaryContact: {
+        primaryContactName: name,
+        primaryContactEmail: email,
       },
-      businessClassifications: {} as IBusinessClassification,
-      safetyAndCompliance: {
-        trir: 0,
-        emr: 0,
-      },
-      files: {
-        coi: null as File | null,
-        oshaLogs: null as File | null,
-        safetyProgram: null as File | null,
-        bankInfo: null as File | null,
+      secondaryContact: {
+        secondaryContactName: "",
+        secondaryContactEmail: "",
       },
     },
-    onSubmit: async (values: { [x: string]: any; files: any }) => {
+    businessClassifications: {} as IBusinessClassification,
+    safetyAndCompliance: {
+      trir: 0,
+      emr: 0,
+    },
+    files: {
+      coi: null as File | null,
+      oshaLogs: null as File | null,
+      safetyProgram: null as File | null,
+      bankInfo: null as File | null,
+    },
+  };
+
+  const clientInitialValues = {
+    clientName: "",
+    yearsOfOperation: 0,
+    contactInfo: {
+      primaryContact: {
+        primaryContactName: name,
+        primaryContactEmail: email,
+      },
+      secondaryContact: {
+        secondaryContactName: "",
+        secondaryContactEmail: "",
+      },
+    },
+  };
+  const formik = useFormik({
+    initialValues:
+      businessType === BusinessType.CLIENT
+        ? clientInitialValues
+        : supplierInitialValues,
+    onSubmit: async (values: { [x: string]: any; files?: any }) => {
       try {
-        const { files, ...supplierData } = values;
-        await onboardSupplier(JSON.stringify(supplierData), {
-          coi: files.coi || undefined,
-          safetyProgram: files.safetyProgram || undefined,
-          oshaLogs: files.oshaLogs || undefined,
-          bankInfo: files.bankInfo || undefined,
-        });
+        const { files, ...formData } = values;
+        if (businessType === BusinessType.SUPPLIER) {
+          await onboardSupplier(JSON.stringify(formData), {
+            coi: files?.coi || undefined,
+            safetyProgram: files?.safetyProgram || undefined,
+            oshaLogs: files?.oshaLogs || undefined,
+            bankInfo: files?.bankInfo || undefined,
+          });
+        } else {
+          await onboardClient(JSON.stringify(formData));
+        }
 
         formik.resetForm();
-        router.push("/dashboard");
-        // Handle success (e.g., show message, redirect)
+        router.push(
+          businessType === BusinessType.SUPPLIER ? "/clients" : "/dashboard"
+        );
       } catch (error) {
         console.error("Submission error:", error);
       }

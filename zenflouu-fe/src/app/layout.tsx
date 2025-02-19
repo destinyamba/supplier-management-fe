@@ -30,7 +30,7 @@ const geistMono = Geist_Mono({
 
 interface User {
   name: string;
-  businessType: string;
+  userType: string;
   organizationName: string;
 }
 
@@ -123,6 +123,8 @@ export default function RootLayout({
     fetchUserDetails();
   }, []);
 
+  console.log("user", user);
+
   return (
     <html lang="en">
       <body
@@ -133,7 +135,7 @@ export default function RootLayout({
           <Box sx={{ position: "fixed" }}>
             <SideBar
               userName={user?.name ?? ""}
-              navItems={navItems(user?.businessType ?? "")}
+              navItems={navItems(user?.userType ?? "")}
               organisationName={user?.organizationName ?? ""}
               additionalMenuItems={additionalMenuItems}
             />
