@@ -12,7 +12,6 @@ export const onboardSupplier = async (
   supplierData: string,
   files: {
     coi?: File;
-    safetyProgram?: File;
     oshaLogs?: File;
     bankInfo?: File;
   }

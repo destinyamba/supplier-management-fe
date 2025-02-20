@@ -3,11 +3,6 @@ import { Grid2 } from "@mui/material";
 import React from "react";
 import Layout from "../layout";
 
-interface User {
-  name: string;
-  organizationName: string;
-}
-
 const Dashboard = () => {
   return (
     <>

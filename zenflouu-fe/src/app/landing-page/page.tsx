@@ -34,57 +34,69 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 export function AppAppBar() {
   const [open, setOpen] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
   const router = useRouter();
 
   const toggleDrawer = (newOpen: boolean) => () => setOpen(newOpen);
 
+  React.useEffect(() => setMounted(true), []);
+
   return (
-    <AppBar
-      position="fixed"
-      sx={{ bgcolor: "transparent", boxShadow: 0, mt: 2 }}
-    >
-      <Container maxWidth="lg">
-        <StyledToolbar variant="dense" disableGutters>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <Image
-              src="zenflouu-logo.svg"
-              alt="zenflouu-logo"
-              width={150}
-              height={50}
-            />
-            <Box
-              sx={{
-                display: { xs: "none", md: "flex" },
-                gap: 1,
-              }}
-            >
-              <Button onClick={() => router.push("/#problems")}>Problem</Button>
-              <Button onClick={() => router.push("/#features")}>
-                Features
-              </Button>
-              <Button onClick={() => router.push("/#solutions")}>
-                Solutions
-              </Button>
-            </Box>
-          </Box>
+    <>
+      {mounted && (
+        <AppBar
+          position="fixed"
+          sx={{ bgcolor: "transparent", boxShadow: 0, mt: 2 }}
+        >
+          <Container maxWidth="lg">
+            <StyledToolbar variant="dense" disableGutters>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                <Image
+                  src="zenflouu-logo.svg"
+                  alt="zenflouu-logo"
+                  width={150}
+                  height={50}
+                />
+                <Box
+                  sx={{
+                    display: { xs: "none", md: "flex" },
+                    gap: 1,
+                  }}
+                >
+                  <Button onClick={() => router.push("/#problems")}>
+                    Problem
+                  </Button>
+                  <Button onClick={() => router.push("/#features")}>
+                    Features
+                  </Button>
+                  <Button onClick={() => router.push("/#solutions")}>
+                    Solutions
+                  </Button>
+                </Box>
+              </Box>
 
-          <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
-            <Button onClick={() => router.push("/sign-in")}>Sign in</Button>
-            <Button variant="contained" onClick={() => router.push("/sign-up")}>
-              Get Started
-            </Button>
-            <CaretCircleDown />
-          </Box>
+              <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
+                <Button onClick={() => router.push("/sign-in")}>Sign in</Button>
+                <Button
+                  variant="contained"
+                  onClick={() => router.push("/sign-up")}
+                >
+                  Get Started
+                </Button>
+                <CaretCircleDown />
+              </Box>
 
-          <Box sx={{ display: { xs: "flex", md: "none" }, gap: 1 }}>
-            <CaretCircleDown />
-            <IconButton onClick={toggleDrawer(true)}>
-              <MenuIcon />
-            </IconButton>
-          </Box>
-        </StyledToolbar>
-      </Container>
-    </AppBar>
+              <Box sx={{ display: { xs: "flex", md: "none" }, gap: 1 }}>
+                <CaretCircleDown />
+                <IconButton onClick={toggleDrawer(true)}>
+                  <MenuIcon />
+                </IconButton>
+              </Box>
+            </StyledToolbar>
+          </Container>
+        </AppBar>
+      )}
+    </>
   );
 }
 

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Stepper,
   Step,
@@ -9,6 +9,8 @@ import {
   TextField,
   Box,
   Typography,
+  Alert,
+  Snackbar,
 } from "@mui/material";
 import { blue, grey } from "@mui/material/colors";
 import {
@@ -28,12 +30,12 @@ import { onboardSupplier } from "@/apis/supplierOnboardingService";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import { onboardClient } from "@/apis/clientService";
+import axios, { AxiosError } from "axios";
 
 const FileUploadStep = ({ formData, handleChange }: any) => {
   const uploadFields = [
     { label: "COI (Certificate of Insurance)", key: "coi" },
     { label: "OSHA Logs", key: "oshaLogs" },
-    { label: "Safety Program", key: "safetyProgram" },
     { label: "Bank Information", key: "bankInfo" },
   ];
 
@@ -467,6 +469,7 @@ const DynamicOnboardingForm: React.FC<IDynamicOnboardingForm> = ({
   businessType,
 }) => {
   const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
   const steps =
     businessType === BusinessType.CLIENT ? clientSteps : supplierSteps;
 
@@ -514,6 +517,11 @@ const DynamicOnboardingForm: React.FC<IDynamicOnboardingForm> = ({
       },
     },
   };
+
+  const handleCloseError = () => {
+    setError(null);
+  };
+
   const formik = useFormik({
     initialValues:
       businessType === BusinessType.CLIENT
@@ -521,11 +529,11 @@ const DynamicOnboardingForm: React.FC<IDynamicOnboardingForm> = ({
         : supplierInitialValues,
     onSubmit: async (values: { [x: string]: any; files?: any }) => {
       try {
+        setError(null);
         const { files, ...formData } = values;
         if (businessType === BusinessType.SUPPLIER) {
           await onboardSupplier(JSON.stringify(formData), {
             coi: files?.coi || undefined,
-            safetyProgram: files?.safetyProgram || undefined,
             oshaLogs: files?.oshaLogs || undefined,
             bankInfo: files?.bankInfo || undefined,
           });
@@ -538,13 +546,40 @@ const DynamicOnboardingForm: React.FC<IDynamicOnboardingForm> = ({
           businessType === BusinessType.SUPPLIER ? "/clients" : "/dashboard"
         );
       } catch (error) {
+        let errorMessage = "An unexpected error occurred during submission.";
+
+        if (axios.isAxiosError(error)) {
+          // Handle Axios errors
+          const axiosError = error as AxiosError;
+          errorMessage =
+            axiosError.response?.data?.toString() ||
+            axiosError.message ||
+            "Failed to submit form";
+        }
+
         console.error("Submission error:", error);
+        setError(errorMessage);
       }
     },
   });
 
   return (
     <Box sx={{ maxWidth: 800, margin: "auto" }}>
+      <Snackbar
+        open={!!error}
+        autoHideDuration={4000}
+        onClose={handleCloseError}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          severity="error"
+          onClose={handleCloseError}
+          sx={{ width: "100%" }}
+        >
+          {error}
+        </Alert>
+      </Snackbar>
+
       <Typography variant="h5" color={grey[800]} fontWeight={600}>
         {businessType === BusinessType.CLIENT
           ? "Client Onboarding"

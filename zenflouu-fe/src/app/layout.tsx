@@ -123,8 +123,6 @@ export default function RootLayout({
     fetchUserDetails();
   }, []);
 
-  console.log("user", user);
-
   return (
     <html lang="en">
       <body
