@@ -1,22 +1,24 @@
 "use client";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { SideBar } from "xarton-1";
+import { useRouter } from "next/navigation";
+import { getUserDetails } from "@/apis/userManagementService";
+import { User } from "@/types";
+import { Box, Grid2 } from "@mui/material";
+import { grey } from "@mui/material/colors";
 import {
   SquaresFour,
   UsersFour,
   Binoculars,
   ClipboardText,
-  SignOut,
-  UsersThree,
-  BuildingOffice,
   UserCheck,
+  BuildingOffice,
+  UsersThree,
+  SignOut,
 } from "@phosphor-icons/react";
-import { useRouter } from "next/navigation";
-import { getUserDetails } from "@/apis/userManagementService";
-import React, { useState, useEffect } from "react";
-import { grey } from "@mui/material/colors";
-import { Box, Grid2 } from "@mui/material";
+import { useState, useEffect } from "react";
+import { SideBar } from "xarton-1";
+import React from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,12 +29,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
-interface User {
-  name: string;
-  userType: string;
-  organizationName: string;
-}
 
 export default function RootLayout({
   children,

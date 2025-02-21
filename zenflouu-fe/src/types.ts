@@ -83,3 +83,28 @@ export const mappedRequirementsStatus = (
       return IRequirementsStatus.REQUIREMENTS_SUBMITTED;
   }
 };
+
+export enum Role {
+  ADMIN = "ADMIN",
+  EDITOR = "EDITOR",
+  VIEWER = "VIEWER",
+}
+
+export interface User {
+  id: string;
+  name: string;
+  userType: string;
+  organizationName: string;
+  email?: string;
+  lastSignIn?: Date;
+  createdAt?: Date;
+  role?: Role;
+}
+
+export interface NavItems {
+  label: string;
+  href: string;
+  icon: React.ReactNode;
+  badgeCount?: number;
+  onClick?: () => void;
+}
