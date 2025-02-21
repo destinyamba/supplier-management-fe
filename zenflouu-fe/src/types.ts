@@ -5,7 +5,7 @@ export interface ISupplierCard {
   requirementsStatus: IRequirementsStatus;
   services: string[];
   states: string[];
-  yearsInOperation: number;
+  yearsOfOperation: number;
   revenue: IRevenue;
   numberOfEmployees: IEmployees;
   businessClassifications?: string[];
@@ -21,8 +21,21 @@ export interface ISupplierCard {
 
 export enum IContractType {
   DIRECT = "Direct",
+  NO_CONTRACT = "No Contract",
   SUBCONTRACTED = "Subcontracted",
 }
+
+export const mapContractType = (contractType: string): IContractType => {
+  switch (contractType) {
+    case "Direct":
+      return IContractType.DIRECT;
+    case "Subcontracted":
+      return IContractType.SUBCONTRACTED;
+    case "NO_CONTRACT":
+    default:
+      return IContractType.NO_CONTRACT;
+  }
+};
 
 export enum IRevenue {
   "0-1M GBP" = "0-1M GBP",
@@ -44,7 +57,29 @@ export enum IWorkStatus {
   NOT_APPROVED = "Not Approved",
 }
 
+export const mapWorkStatus = (workStatus: string): IWorkStatus => {
+  switch (workStatus) {
+    case "APPROVED":
+      return IWorkStatus.APPROVED;
+    case "NOT_APPROVED":
+    default:
+      return IWorkStatus.NOT_APPROVED;
+  }
+};
+
 export enum IRequirementsStatus {
   REQUIREMENTS_PENDING = "Requirements Pending",
   REQUIREMENTS_SUBMITTED = "Requirements Submitted",
 }
+
+export const mappedRequirementsStatus = (
+  requirementsStatus: string
+): IRequirementsStatus => {
+  switch (requirementsStatus) {
+    case "PENDING":
+      return IRequirementsStatus.REQUIREMENTS_PENDING;
+    case "SUBMITTED":
+    default:
+      return IRequirementsStatus.REQUIREMENTS_SUBMITTED;
+  }
+};

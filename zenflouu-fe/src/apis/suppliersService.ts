@@ -8,9 +8,9 @@ const getToken = () => {
   }
   return null;
 };
-export const getAllSuppliers = async () => {
+export const getAllSuppliers = async (page?: number) => {
   const token = getToken();
-  return axios.get(`${API_BASE_URL}/all`, {
+  return axios.get(`${API_BASE_URL}/all?pageNum=${page}`, {
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: token ? `Bearer ${token}` : "",
