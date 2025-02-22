@@ -20,7 +20,6 @@ export const ActionsMenu: React.FC<{ userId: string }> = ({ userId }) => {
   };
 
   const handleDelete = () => {
-    console.log("Delete user:", userId);
     handleCloseMenu();
   };
 

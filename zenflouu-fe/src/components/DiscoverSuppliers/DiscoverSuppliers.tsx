@@ -13,11 +13,9 @@ export const DiscoverSuppliers = () => {
     const fetchSuppliers = async () => {
       try {
         const response = await getAllSuppliers(page);
-        console.log(response);
         if (Array.isArray(response.data.suppliers)) {
           setSuppliers(response.data.suppliers);
           setTotalPages(response.data.totalPages);
-          // setPage(response.data.page);
         } else {
           console.error("Response data is not an array:", response.data);
         }

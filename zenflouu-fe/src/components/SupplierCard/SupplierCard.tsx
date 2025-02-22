@@ -20,7 +20,6 @@ interface SupplierCardProps {
 export const SupplierCard: React.FC<SupplierCardProps> = ({
   suppliers,
 }: SupplierCardProps) => {
-  console.log(suppliers.workStatus);
   const getContractTypeColor = (contractType: IContractType) => {
     switch (contractType) {
       case IContractType.DIRECT:

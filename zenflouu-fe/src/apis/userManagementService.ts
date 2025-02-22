@@ -41,3 +41,19 @@ export const getUserDetails = async () => {
 
   return axios.post(`${API_BASE_URL}/get-user-details`, { userEmail });
 };
+
+export const getUserAssociatedOrgs = async () => {
+  const token = getToken();
+  if (!token) {
+    throw new Error("No token found");
+  }
+
+  const decodedToken = decodeToken(token);
+  if (!decodedToken || !decodedToken.sub) {
+    throw new Error("Invalid token");
+  }
+
+  const orgId = decodedToken.orgId;
+
+  return axios.get(`${API_BASE_URL}/associated-org-users/${orgId}`);
+};

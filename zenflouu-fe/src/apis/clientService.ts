@@ -11,7 +11,6 @@ const getToken = () => {
 
 export const onboardClient = async (clientData: any) => {
   const token = getToken();
-  console.log(clientData);
   try {
     const response = await axios.post(`${API_BASE_URL}/onboard`, clientData, {
       headers: {

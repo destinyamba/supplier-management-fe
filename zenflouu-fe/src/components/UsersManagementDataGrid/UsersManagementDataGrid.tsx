@@ -65,7 +65,9 @@ export const UsersManagementDataGrid = ({ users }: { users: User[] }) => {
       width: 160,
       renderCell: (params: GridRenderCellParams<User>) => (
         <Typography>
-          {new Date(params.row.organizationName).toUTCString()}
+          {params.row.lastSignIn
+            ? new Date(params.row.lastSignIn).toUTCString()
+            : "N/A"}
         </Typography>
       ),
     },
@@ -75,7 +77,9 @@ export const UsersManagementDataGrid = ({ users }: { users: User[] }) => {
       width: 200,
       renderCell: (params: GridRenderCellParams<User>) => (
         <Typography>
-          {new Date(params.row.userType).toLocaleDateString()}
+          {params.row.createdAt
+            ? new Date(params.row.createdAt).toDateString()
+            : "N/A"}
         </Typography>
       ),
     },
@@ -94,6 +98,7 @@ export const UsersManagementDataGrid = ({ users }: { users: User[] }) => {
     <>
       <Box sx={{ p: 3, height: "100%" }}>
         <StyledDataGrid
+          getRowId={(row) => row.userId}
           rows={users}
           columns={columns}
           paginationModel={paginationModel}

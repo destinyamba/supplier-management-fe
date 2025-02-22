@@ -99,6 +99,7 @@ export interface User {
   lastSignIn?: Date;
   createdAt?: Date;
   role?: Role;
+  orgId?: string;
 }
 
 export interface NavItems {
