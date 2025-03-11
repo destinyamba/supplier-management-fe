@@ -12,14 +12,15 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
-import { SitemarkIcon } from "@/components/CustomIcons/CustomIcons";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import { object, string } from "yup";
 import { signin } from "@/apis/authService";
 import axios from "axios";
 import Image from "next/image";
-import { Grid2 } from "@mui/material";
+import { Alert, Snackbar } from "@mui/material";
+import { error } from "console";
+import { useState } from "react";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -46,7 +47,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 
 export default function SignIn() {
   const router = useRouter();
-
+  const [error, setError] = useState<string | null>(null);
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -60,9 +61,11 @@ export default function SignIn() {
     }),
     onSubmit: async (values, { setSubmitting, setErrors }) => {
       try {
+        setError(null);
         await signin(values);
-        router.push("/dashboard"); // Redirect on successful sign-in
+        router.push("/dashboard");
       } catch (error) {
+        setError("Invalid credentials. Please try again.");
         if (axios.isAxiosError(error)) {
           setErrors({ general: "Invalid credentials. Please try again." });
         }
@@ -72,10 +75,27 @@ export default function SignIn() {
     },
   });
 
+  const handleCloseError = () => {
+    setError(null);
+  };
+
   return (
     <>
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="center">
+        <Snackbar
+          open={!!error}
+          autoHideDuration={4000}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        >
+          <Alert
+            severity="error"
+            sx={{ width: "100%" }}
+            onClose={handleCloseError}
+          >
+            {error}
+          </Alert>
+        </Snackbar>
         <Card variant="outlined">
           <Link href="/">
             <Image
