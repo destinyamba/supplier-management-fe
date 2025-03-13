@@ -1,6 +1,5 @@
+import { inviteUserInitial } from "@/apis/userManagementService";
 import {
-  Alert,
-  Box,
   Button,
   Dialog,
   DialogActions,
@@ -10,7 +9,6 @@ import {
   FormLabel,
   MenuItem,
   Select,
-  Snackbar,
   Stack,
   TextField,
   Typography,
@@ -28,32 +26,23 @@ export const UserDialog: React.FC<UserDialogProps> = ({
   open,
   onClose,
 }: UserDialogProps) => {
-  const [state, setState] = useState({
-    openSnackbar: false,
-    vertical: "top",
-    horizontal: "center",
-  });
-  const { vertical, horizontal, openSnackbar } = state;
-
   const [error, setError] = useState<string | null>(null);
   const formik = useFormik({
     initialValues: {
       name: "",
       email: "",
-      password: "",
       role: "",
     },
     validationSchema: object({
       name: string().required("Required"),
       email: string().email("Invalid email address").required("Required"),
-      password: string().required("Required"),
-      general: string(),
+      role: string().required("Required"),
     }),
     onSubmit: async (values, { setSubmitting, setErrors }) => {
       try {
+        setSubmitting(true);
         setError(null);
-        // await signin(values);
-        // router.push("/dashboard");
+        await inviteUserInitial(values.name, values.email, values.role);
       } catch (error) {
         setError("Invalid credentials. Please try again.");
         if (axios.isAxiosError(error)) {
@@ -73,21 +62,7 @@ export const UserDialog: React.FC<UserDialogProps> = ({
           </Typography>
         </DialogTitle>
         <DialogContent>
-          <Box>
-            <Snackbar
-              autoHideDuration={4000}
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
-              open={openSnackbar}
-              onClose={onClose}
-              message="Oops! Something went wrong."
-              key={vertical + horizontal}
-            >
-              <Alert severity="error" sx={{ width: "100%" }}>
-                {error}
-              </Alert>
-            </Snackbar>
-          </Box>
-          <Stack>
+          <Stack component="form" onSubmit={formik.handleSubmit}>
             <FormControl>
               <FormLabel htmlFor="name">Name</FormLabel>
               <TextField
@@ -138,12 +113,22 @@ export const UserDialog: React.FC<UserDialogProps> = ({
                 <MenuItem value="VIEWER">VIEWER</MenuItem>
               </Select>
             </FormControl>
+
+            <DialogActions>
+              {" "}
+              <Button onClick={onClose} disabled={formik.isSubmitting}>
+                Close
+              </Button>
+              <Button
+                type="submit"
+                onClick={onClose}
+                disabled={formik.isSubmitting}
+              >
+                Send
+              </Button>
+            </DialogActions>
           </Stack>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose}>Close</Button>
-          <Button onClick={onClose}>Send</Button>
-        </DialogActions>
       </Dialog>
     </>
   );

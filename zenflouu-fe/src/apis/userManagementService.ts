@@ -57,3 +57,46 @@ export const getUserAssociatedOrgs = async () => {
 
   return axios.get(`${API_BASE_URL}/associated-org-users/${orgId}`);
 };
+
+export const inviteUserInitial = async (
+  name: string,
+  email: string,
+  role: string
+) => {
+  const token = getToken();
+  if (!token) {
+    throw new Error("No token found");
+  }
+
+  const decodedToken = decodeToken(token);
+  if (!decodedToken || !decodedToken.sub) {
+    throw new Error("Invalid token");
+  }
+
+  const orgId = decodedToken.orgId;
+  const userType = decodedToken.businessType;
+
+  return axios.post(`${API_BASE_URL}/invite-user-initial`, {
+    name,
+    email,
+    role,
+    orgId,
+    businessType: userType,
+  });
+};
+
+export const inviteUserComplete = async (email: string, password: string) => {
+  const token = getToken();
+  if (!token) {
+    throw new Error("No token found");
+  }
+
+  const decodedToken = decodeToken(token);
+  if (!decodedToken || !decodedToken.sub) {
+    throw new Error("Invalid token");
+  }
+
+  return axios.post(
+    `${API_BASE_URL}/invite-user-complete/${email}/${password}`
+  );
+};

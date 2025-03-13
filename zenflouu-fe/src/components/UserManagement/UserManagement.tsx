@@ -16,7 +16,7 @@ import { UsersManagementDataGrid } from "../UsersManagementDataGrid/UsersManagem
 import { Plus } from "@phosphor-icons/react";
 import { UserDialog } from "../UserDialog/UserDialog";
 
-export const UserManagement = () => {
+export const UserManagement = ({ userRole }: { userRole: string }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [toggleDialog, setToggleDialog] = useState<boolean>(false);
@@ -79,15 +79,18 @@ export const UserManagement = () => {
         <Typography variant="h4" fontWeight={600} m={2}>
           User Management
         </Typography>
-        <Button
-          variant="contained"
-          sx={{ mr: 2, mt: 2, height: 40, borderRadius: 32 }}
-          size="medium"
-          startIcon={<Plus />}
-          onClick={handleToggleDialog}
-        >
-          Invite User
-        </Button>
+        {userRole === "ADMIN" && (
+          <Button
+            variant="contained"
+            sx={{ mr: 2, mt: 2, height: 40, borderRadius: 32 }}
+            size="medium"
+            startIcon={<Plus />}
+            onClick={handleToggleDialog}
+          >
+            Invite User
+          </Button>
+        )}
+
         <UserDialog open={toggleDialog} onClose={handleDialogClose} />
       </Stack>
       <Grid2>
