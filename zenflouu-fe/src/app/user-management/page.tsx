@@ -22,9 +22,12 @@ const UserManagementPage = () => {
     fetchUserDetails();
   }, []);
   return (
-    <PageLayout showSideBar>
-      {user && <UserManagement user={user} />}
-    </PageLayout>
+    <>
+      <title>ZenFlouu | User Management</title>
+      <PageLayout showSideBar>
+        {user && <UserManagement user={user} />}
+      </PageLayout>
+    </>
   );
 };
 

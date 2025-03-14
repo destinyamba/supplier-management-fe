@@ -6,6 +6,7 @@ import PageLayout from "@/components/pagelayout";
 const Dashboard = () => {
   return (
     <>
+      <title>ZenFlouu | Discover</title>
       <PageLayout showSideBar={true}>
         <DiscoverSuppliers />
       </PageLayout>

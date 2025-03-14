@@ -106,6 +106,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
 
   return (
     <>
+      <title>ZenFlouu | Sign Up</title>
       <CssBaseline enableColorScheme />
       <SignUpContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">

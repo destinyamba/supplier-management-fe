@@ -18,6 +18,7 @@ export default function Onboarding() {
 
   return (
     <>
+      <title>ZenFlouu | Onboarding</title>
       <Stack bgcolor="white" p={3}>
         <AppBarComponent
           isCaptive={true}

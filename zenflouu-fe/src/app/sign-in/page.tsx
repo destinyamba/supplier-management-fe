@@ -81,6 +81,7 @@ export default function SignIn() {
 
   return (
     <>
+    <title>ZenFlouu | Sign In</title>
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="center">
         <Snackbar
