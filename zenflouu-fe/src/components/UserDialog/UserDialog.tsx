@@ -1,5 +1,5 @@
-import { inviteUserInitial } from "@/apis/userManagementService";
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -9,6 +9,7 @@ import {
   FormLabel,
   MenuItem,
   Select,
+  Snackbar,
   Stack,
   TextField,
   Typography,
@@ -21,18 +22,21 @@ import { object, string } from "yup";
 interface UserDialogProps {
   open: boolean;
   onClose: () => void;
+  initialValues?: { name: string; email: string; role: string };
+  onSubmit: (values: { name: string; email: string; role: string }) => void;
+  title: string;
 }
 export const UserDialog: React.FC<UserDialogProps> = ({
   open,
   onClose,
+  initialValues = { name: "", email: "", role: "" },
+  onSubmit,
+  title,
 }: UserDialogProps) => {
   const [error, setError] = useState<string | null>(null);
   const formik = useFormik({
-    initialValues: {
-      name: "",
-      email: "",
-      role: "",
-    },
+    initialValues,
+    enableReinitialize: true,
     validationSchema: object({
       name: string().required("Required"),
       email: string().email("Invalid email address").required("Required"),
@@ -42,11 +46,12 @@ export const UserDialog: React.FC<UserDialogProps> = ({
       try {
         setSubmitting(true);
         setError(null);
-        await inviteUserInitial(values.name, values.email, values.role);
+        await onSubmit(values);
+        onClose();
       } catch (error) {
         setError("Invalid credentials. Please try again.");
         if (axios.isAxiosError(error)) {
-          setErrors({ role: "Invalid credentials (role). Please try again." });
+          setErrors({ email: "Email may already be in use or invalid." });
         }
       } finally {
         setSubmitting(false);
@@ -55,14 +60,14 @@ export const UserDialog: React.FC<UserDialogProps> = ({
   });
   return (
     <>
-      <Dialog fullWidth open={open} onClose={onClose} sx={{ p: 18 }}>
+      <Dialog fullWidth open={open} onClose={onClose} sx={{ m: 10 }}>
         <DialogTitle>
           <Typography variant="h5" fontWeight={600}>
-            Invite a user to Organisation
+            {title}
           </Typography>
         </DialogTitle>
         <DialogContent>
-          <Stack component="form" onSubmit={formik.handleSubmit}>
+          <Stack component="form" onSubmit={formik.handleSubmit} gap={2}>
             <FormControl>
               <FormLabel htmlFor="name">Name</FormLabel>
               <TextField
@@ -113,18 +118,28 @@ export const UserDialog: React.FC<UserDialogProps> = ({
                 <MenuItem value="VIEWER">VIEWER</MenuItem>
               </Select>
             </FormControl>
-
+            <Snackbar
+              autoHideDuration={1000}
+              anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            >
+              <Alert sx={{ width: "100%" }}>{error}</Alert>
+            </Snackbar>
             <DialogActions>
               {" "}
-              <Button onClick={onClose} disabled={formik.isSubmitting}>
+              <Button
+                variant="outlined"
+                onClick={onClose}
+                disabled={formik.isSubmitting}
+              >
                 Close
               </Button>
               <Button
                 type="submit"
                 onClick={onClose}
+                variant="contained"
                 disabled={formik.isSubmitting}
               >
-                Send
+                Save
               </Button>
             </DialogActions>
           </Stack>

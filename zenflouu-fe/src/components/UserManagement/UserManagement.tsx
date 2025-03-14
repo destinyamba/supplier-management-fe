@@ -1,4 +1,7 @@
-import { getUserAssociatedOrgs } from "@/apis/userManagementService";
+import {
+  getUserAssociatedOrgs,
+  inviteUserInitial,
+} from "@/apis/userManagementService";
 import { User } from "@/types";
 import {
   Grid2,
@@ -16,7 +19,7 @@ import { UsersManagementDataGrid } from "../UsersManagementDataGrid/UsersManagem
 import { Plus } from "@phosphor-icons/react";
 import { UserDialog } from "../UserDialog/UserDialog";
 
-export const UserManagement = ({ userRole }: { userRole: string }) => {
+export const UserManagement = ({ user }: { user: User }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [toggleDialog, setToggleDialog] = useState<boolean>(false);
@@ -28,6 +31,18 @@ export const UserManagement = ({ userRole }: { userRole: string }) => {
   };
   const handleDialogClose = () => {
     setToggleDialog(false);
+  };
+  const handleInviteUser = async (values: {
+    name: string;
+    email: string;
+    role: string;
+  }) => {
+    try {
+      setError(null);
+      await inviteUserInitial(values.name, values.email, values.role);
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+    }
   };
   useEffect(() => {
     const fetchListOfUsers = async () => {
@@ -79,7 +94,7 @@ export const UserManagement = ({ userRole }: { userRole: string }) => {
         <Typography variant="h4" fontWeight={600} m={2}>
           User Management
         </Typography>
-        {userRole === "ADMIN" && (
+        {user.role === "ADMIN" && (
           <Button
             variant="contained"
             sx={{ mr: 2, mt: 2, height: 40, borderRadius: 32 }}
@@ -91,10 +106,15 @@ export const UserManagement = ({ userRole }: { userRole: string }) => {
           </Button>
         )}
 
-        <UserDialog open={toggleDialog} onClose={handleDialogClose} />
+        <UserDialog
+          open={toggleDialog}
+          onClose={handleDialogClose}
+          onSubmit={handleInviteUser}
+          title={"Invite User"}
+        />
       </Stack>
       <Grid2>
-        <UsersManagementDataGrid users={users} />
+        <UsersManagementDataGrid users={users} currentUser={user} />
       </Grid2>
     </Stack>
   );

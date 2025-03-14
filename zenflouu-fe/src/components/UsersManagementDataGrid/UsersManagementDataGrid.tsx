@@ -30,7 +30,13 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   },
 }));
 
-export const UsersManagementDataGrid = ({ users }: { users: User[] }) => {
+export const UsersManagementDataGrid = ({
+  users,
+  currentUser,
+}: {
+  users: User[];
+  currentUser: User;
+}) => {
   const [paginationModel, setPaginationModel] = useState({
     pageSize: 10,
     page: 0,
@@ -89,11 +95,10 @@ export const UsersManagementDataGrid = ({ users }: { users: User[] }) => {
       width: 50,
       sortable: false,
       renderCell: (params: GridRenderCellParams<User>) => (
-        <ActionsMenu userId={params.row.id} />
+        <ActionsMenu userId={params.row.userId} currentUser={currentUser} />
       ),
     },
   ];
-
   return (
     <>
       <Box sx={{ p: 3, height: "100%" }}>

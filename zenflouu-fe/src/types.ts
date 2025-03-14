@@ -91,7 +91,7 @@ export enum Role {
 }
 
 export interface User {
-  id: string;
+  userId: string;
   name: string;
   userType: string;
   organizationName: string;

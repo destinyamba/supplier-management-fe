@@ -21,11 +21,7 @@ const UserManagementPage = () => {
 
     fetchUserDetails();
   }, []);
-  return (
-    <Layout showSideBar>
-      <UserManagement userRole={user!!.role!!} />
-    </Layout>
-  );
+  return <Layout showSideBar>{user && <UserManagement user={user} />}</Layout>;
 };
 
 export default UserManagementPage;

@@ -100,3 +100,60 @@ export const inviteUserComplete = async (email: string, password: string) => {
     `${API_BASE_URL}/invite-user-complete/${email}/${password}`
   );
 };
+
+export const deleteUser = async (userId: string) => {
+  const token = getToken();
+  if (!token) {
+    throw new Error("No token found");
+  }
+
+  const decodedToken = decodeToken(token);
+  if (!decodedToken || !decodedToken.sub) {
+    throw new Error("Invalid token");
+  }
+  console.log("userId", userId);
+
+  return axios.delete(`${API_BASE_URL}/delete/user/${userId}`);
+};
+
+export const editUser = async (
+  userId: string,
+  newName?: string,
+  newEmail?: string,
+  newRole?: string
+) => {
+  const token = getToken();
+  if (!token) {
+    throw new Error("No token found");
+  }
+
+  const decodedToken = decodeToken(token);
+  if (!decodedToken || !decodedToken.sub) {
+    throw new Error("Invalid token");
+  }
+
+  const data: any = {};
+  if (newName) data.newName = newName;
+  if (newEmail) data.newEmail = newEmail;
+  if (newRole) data.newRole = newRole;
+  console.log("data", data);
+  console.log("userId", userId);
+  return axios.put(`${API_BASE_URL}/update/user`, {
+    userId,
+    ...data,
+  });
+};
+
+export const getUserById = async (userId: string) => {
+  const token = getToken();
+  if (!token) {
+    throw new Error("No token found");
+  }
+
+  const decodedToken = decodeToken(token);
+  if (!decodedToken || !decodedToken.sub) {
+    throw new Error("Invalid token");
+  }
+
+  return axios.get(`${API_BASE_URL}/get-user-details/${userId}`);
+};
