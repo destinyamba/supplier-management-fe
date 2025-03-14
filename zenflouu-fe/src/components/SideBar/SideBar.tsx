@@ -1,22 +1,17 @@
+"use client";
 import React, { useState } from "react";
 import styled from "styled-components";
 import {
   Box,
   List,
-  ListItemIcon,
-  ListItemText,
   Drawer,
-  ListItemButton,
-  Divider,
-  ListItem,
   IconButton,
   Stack,
-  MenuItem,
   useTheme,
   useMediaQuery,
 } from "@mui/material";
 import { ArrowCircleLeft, ArrowCircleRight } from "@phosphor-icons/react";
-import { grey, red } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 import { DrawerHeader } from "./DrawerHeader/DrawerHeader";
 import { CustomListItem } from "./CustomListItem/CustomListItem";
 import { DrawerFooter } from "./DrawerFooter/DrawerFooter";

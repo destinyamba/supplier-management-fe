@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Layout from "../layout";
 import { UserManagement } from "@/components/UserManagement/UserManagement";
 import { getUserDetails } from "@/apis/userManagementService";
 import { User } from "@/types";
+import PageLayout from "@/components/pagelayout";
 
 const UserManagementPage = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -21,7 +21,11 @@ const UserManagementPage = () => {
 
     fetchUserDetails();
   }, []);
-  return <Layout showSideBar>{user && <UserManagement user={user} />}</Layout>;
+  return (
+    <PageLayout showSideBar>
+      {user && <UserManagement user={user} />}
+    </PageLayout>
+  );
 };
 
 export default UserManagementPage;

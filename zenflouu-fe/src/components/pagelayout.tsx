@@ -17,6 +17,7 @@ import {
   UsersThree,
 } from "@phosphor-icons/react";
 import { SideBar } from "xarton-1";
+import ClientOnly from "./ClientOnly/ClientOnly";
 
 export default function PageLayout({
   children,
@@ -108,18 +109,20 @@ export default function PageLayout({
   }, []);
 
   return (
-    <div suppressHydrationWarning style={{ display: "flex" }}>
+    <div style={{ display: "flex" }}>
       {showSideBar && (
         <Box sx={{ position: "fixed" }}>
-          <SideBar
-            userName={user?.name ?? ""}
-            navItems={navItems(user?.userType ?? "")}
-            organisationName={user?.organizationName ?? ""}
-            additionalMenuItems={additionalMenuItems}
-            isSideBarOpen={isSidebarOpen}
-            onOpen={() => setIsSidebarOpen(true)}
-            onClose={() => setIsSidebarOpen(false)}
-          />
+          <ClientOnly>
+            <SideBar
+              userName={user?.name ?? ""}
+              navItems={navItems(user?.userType ?? "")}
+              organisationName={user?.organizationName ?? ""}
+              additionalMenuItems={additionalMenuItems}
+              isSideBarOpen={isSidebarOpen}
+              onOpen={() => setIsSidebarOpen(true)}
+              onClose={() => setIsSidebarOpen(false)}
+            />
+          </ClientOnly>
         </Box>
       )}
       <Grid2
