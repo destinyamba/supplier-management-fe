@@ -1,14 +1,14 @@
 "use client";
 import React from "react";
-import Layout from "../layout";
 import { DiscoverSuppliers } from "@/components/DiscoverSuppliers/DiscoverSuppliers";
+import PageLayout from "@/components/pagelayout";
 
 const Dashboard = () => {
   return (
     <>
-      <Layout showSideBar={true}>
+      <PageLayout showSideBar={true}>
         <DiscoverSuppliers />
-      </Layout>
+      </PageLayout>
     </>
   );
 };
