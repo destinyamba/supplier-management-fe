@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_BASE_URL = "http://localhost:6060/api/v1/user-details";
 
-const decodeToken = (token: any) => {
+export const decodeToken = (token: any) => {
   try {
     const base64Url = token.split(".")[1]; // Get the payload
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");

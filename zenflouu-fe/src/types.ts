@@ -109,3 +109,49 @@ export interface NavItems {
   badgeCount?: number;
   onClick?: () => void;
 }
+
+export interface IWorkOrder {
+  id: string;
+  notes: string;
+  status: string;
+  clientId: string;
+  location: string;
+  dueDate: Date;
+  startDate: Date;
+  projectManager: string;
+  workOrderNumber?: string;
+  taskDescription: string;
+}
+
+export interface ICreateWorkOrder {
+  location: string;
+  dueDate: string;
+  startDate: string;
+  taskDescription: string;
+}
+
+export enum WorkOrderStatus {
+  PENDING,
+  IN_PROGRESS,
+  COMPLETED,
+  CANCELLED,
+}
+
+export const mapWorkOrderStatus = (status: string): WorkOrderStatus => {
+  switch (status) {
+    case "COMPLETED":
+      return WorkOrderStatus.COMPLETED;
+    case "IN_PROGRESS":
+      return WorkOrderStatus.IN_PROGRESS;
+    case "CANCELLED":
+      return WorkOrderStatus.CANCELLED;
+    default:
+      return WorkOrderStatus.PENDING;
+  }
+};
+
+export interface Region {
+  name: string;
+  country: string;
+  abbreviation: string;
+}
