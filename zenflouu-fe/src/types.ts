@@ -119,8 +119,16 @@ export interface IWorkOrder {
   dueDate: Date;
   startDate: Date;
   projectManager: string;
-  workOrderNumber?: string;
+  workOrderNumber: string;
   taskDescription: string;
+}
+
+export interface WOPagedResponse<T> {
+  page: number;
+  pageSize: number;
+  totalItems: number;
+  totalPages: number;
+  wos: T[];
 }
 
 export interface ICreateWorkOrder {
@@ -131,10 +139,10 @@ export interface ICreateWorkOrder {
 }
 
 export enum WorkOrderStatus {
-  PENDING,
-  IN_PROGRESS,
-  COMPLETED,
-  CANCELLED,
+  PENDING = "Pending",
+  IN_PROGRESS = "In Progress",
+  COMPLETED = "Completed",
+  CANCELLED = "Cancelled",
 }
 
 export const mapWorkOrderStatus = (status: string): WorkOrderStatus => {

@@ -1,9 +1,8 @@
-import { IRequirementsStatus, IWorkOrder, WorkOrderStatus } from "@/types";
-import { Stack, Card, CardContent, Box, Typography } from "@mui/material";
-import { green, red, blue, purple, grey } from "@mui/material/colors";
+import { IWorkOrder, mapWorkOrderStatus, WorkOrderStatus } from "@/types";
+import { Card, CardContent, Box, Typography, Grid2 } from "@mui/material";
+import { green, red, blue, grey } from "@mui/material/colors";
 import React from "react";
 import { StatusChip } from "xarton-1";
-import { SealCheck as SealCheckIcon } from "@phosphor-icons/react";
 
 interface WorkOrderCardProps {
   workOrders: IWorkOrder;
@@ -14,40 +13,51 @@ const WorkOrderCard: React.FC<WorkOrderCardProps> = ({
   return (
     <>
       {" "}
-      <Stack>
+      <Grid2 size={{ md: 12 }}>
         <Card sx={{ boxShadow: 1, borderRadius: 2, m: 0 }}>
           <CardContent>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <Box mr={0.5}>
-                <SealCheckIcon size={12} color={blue[500]} weight="duotone" />
+            <Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography variant="h6" fontWeight={600} sx={{ mb: 1 }}>
+                  {/* worOrderNumber */}
+                  {workOrders.workOrderNumber}
+                </Typography>
+                <StatusChip
+                  label={mapWorkOrderStatus(workOrders?.status)}
+                  bgcolor={
+                    mapWorkOrderStatus(workOrders?.status) ===
+                    WorkOrderStatus.COMPLETED
+                      ? green[100]
+                      : mapWorkOrderStatus(workOrders?.status) ===
+                        WorkOrderStatus.IN_PROGRESS
+                      ? blue[100]
+                      : mapWorkOrderStatus(workOrders?.status) ===
+                        WorkOrderStatus.CANCELLED
+                      ? red[100]
+                      : grey[100]
+                  }
+                  borderColor={
+                    mapWorkOrderStatus(workOrders?.status) ===
+                    WorkOrderStatus.COMPLETED
+                      ? green[200]
+                      : mapWorkOrderStatus(workOrders?.status) ===
+                        WorkOrderStatus.IN_PROGRESS
+                      ? blue[200]
+                      : mapWorkOrderStatus(workOrders?.status) ===
+                        WorkOrderStatus.CANCELLED
+                      ? red[200]
+                      : grey[200]
+                  }
+                />
               </Box>
-
-              <Typography variant="body2" fontSize={10}>
-                {/* {mapContractType(suppliers.contractType)} */}
-              </Typography>
             </Box>
 
-            {/* name */}
-            <Typography variant="h6" fontWeight={600} sx={{ mb: 1 }}>
-              {/* worOrderNumber */}
-              {workOrders?.workOrderNumber}
-            </Typography>
-            <Box
-              sx={{
-                justifyContent: "space-between",
-              }}
-            >
-              <StatusChip
-                label={WorkOrderStatus.IN_PROGRESS.toString()}
-                bgcolor={blue[100]}
-                borderColor={blue[200]}
-              />
-            </Box>
             <Box
               sx={{
                 backgroundColor: grey[100],
@@ -58,10 +68,9 @@ const WorkOrderCard: React.FC<WorkOrderCardProps> = ({
                 my: 2,
               }}
             >
-              {/* services */}
-              <Typography variant="subtitle2">Services</Typography>
+              <Typography variant="subtitle2">Location: </Typography>
               <Typography variant="subtitle2">
-                {/* {suppliers.services.length} */}
+                {workOrders?.location}{" "}
               </Typography>
             </Box>
             <Box
@@ -74,21 +83,32 @@ const WorkOrderCard: React.FC<WorkOrderCardProps> = ({
                 my: 2,
               }}
             >
-              {/* states */}
-              <Typography variant="subtitle2">States</Typography>
+              <Typography variant="subtitle2">Stat Date: </Typography>
               <Typography variant="subtitle2">
-                {/* {suppliers.states.length} */}
+                {workOrders?.startDate?.toString()}
               </Typography>
             </Box>
-            {/* yearsOfOperation & revenue & numberOfEmployees */}
+            <Box
+              sx={{
+                backgroundColor: grey[100],
+                p: 2,
+                borderRadius: 2,
+                display: "flex",
+                justifyContent: "space-between",
+                my: 2,
+              }}
+            >
+              <Typography variant="subtitle2">Due Date: </Typography>
+              <Typography variant="subtitle2">
+                {workOrders?.dueDate?.toString()}{" "}
+              </Typography>
+            </Box>
             <Typography variant="caption" color={grey[600]}>
-              {/* {suppliers.yearsOfOperation} Years in Operation |{" "}
-              {suppliers.revenue.toString()} Annual Revenue |{" "}
-              {suppliers.numberOfEmployees} Employees */}
+              {workOrders?.projectManager}
             </Typography>
           </CardContent>
         </Card>
-      </Stack>
+      </Grid2>
     </>
   );
 };

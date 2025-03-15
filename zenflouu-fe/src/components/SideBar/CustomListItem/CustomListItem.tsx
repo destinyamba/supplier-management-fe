@@ -1,6 +1,5 @@
 "use client";
 import styled from "styled-components";
-import { NavItem } from "../../interfaces/types";
 import {
   Badge,
   Grid2,
@@ -14,6 +13,7 @@ import {
 import React from "react";
 import { blue, grey } from "@mui/material/colors";
 import { usePathname } from "next/navigation";
+import { NavItem } from "../SideBar";
 
 interface CustomListItemProps {
   item: NavItem;

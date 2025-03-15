@@ -1,17 +1,28 @@
 "use client";
-import { Button, Grid2, Pagination, Stack, Typography } from "@mui/material";
+import {
+  Alert,
+  Button,
+  Grid2,
+  Pagination,
+  Snackbar,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { Plus } from "@phosphor-icons/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SearchBar from "../SearchBar/SearchBar";
 import { IWorkOrder } from "@/types";
 import WorkOrderCard from "../WorkOrderCard/WorkOrderCard";
 import { CreateWorkOrderDialog } from "../CreateWorkOrderDialog/CreateWorkOrderDialog";
+import { clientWorkOrders } from "@/apis/workOrdersService";
 
 export const WorkOrders = () => {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const [workOrders, setWorkOrders] = useState<IWorkOrder[]>([]);
   const [toggleDialog, setToggleDialog] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const handleToggleDialog = () => {
     setToggleDialog(true);
@@ -20,6 +31,30 @@ export const WorkOrders = () => {
   const handleDialogClose = () => {
     setToggleDialog(false);
   };
+
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+  };
+
+  useEffect(() => {
+    const fetchWOs = async () => {
+      try {
+        const pageData = await clientWorkOrders(page);
+        setWorkOrders(pageData.wos);
+        console.log(pageData);
+        setTotalPages(pageData.totalPages);
+      } catch (error) {
+        setError(error instanceof Error ? error.message : String(error));
+        setSnackbarOpen(true);
+        console.error("Error fetching work orders:", error);
+      }
+    };
+    fetchWOs();
+  }, [page]);
+
   return (
     <>
       {/* Title and create work order button */}
@@ -31,6 +66,20 @@ export const WorkOrders = () => {
           flexDirection: "row",
         }}
       >
+        <Snackbar
+          open={snackbarOpen && error !== null}
+          autoHideDuration={2000}
+          onClose={() => setSnackbarOpen(false)}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        >
+          <Alert
+            onClose={() => setSnackbarOpen(false)}
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            {error}
+          </Alert>
+        </Snackbar>
         <Typography variant="h4" fontWeight={600} m={2}>
           Work Orders
         </Typography>
@@ -55,7 +104,7 @@ export const WorkOrders = () => {
         showFilter={false}
       />
       {/* List of work orders */}
-      <Grid2 container spacing={2} flexDirection="column" mx={2}>
+      <Grid2 container spacing={2} flexDirection="column" mx={2} mt={2}>
         <Grid2 container spacing={2}>
           {workOrders.map((workOrder, index) => (
             <Grid2
@@ -68,15 +117,15 @@ export const WorkOrders = () => {
           ))}
         </Grid2>
         {/* Pagination */}
-        {/* <Grid2 m={2} display="flex" justifyContent="end">
+        <Grid2 m={2} display="flex" justifyContent="end">
           <Pagination
             page={page}
             count={totalPages}
-            onChange={() => {}}
+            onChange={handlePageChange}
             variant="outlined"
             color="primary"
           />
-        </Grid2> */}
+        </Grid2>
       </Grid2>
     </>
   );

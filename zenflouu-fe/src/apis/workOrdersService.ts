@@ -1,6 +1,6 @@
 import axios from "axios";
 import { decodeToken } from "./userManagementService";
-import { ICreateWorkOrder, IWorkOrder } from "@/types";
+import { ICreateWorkOrder, IWorkOrder, WOPagedResponse } from "@/types";
 
 const API_BASE_URL = "http://localhost:6060/api/v1/work-order";
 
@@ -16,24 +16,22 @@ if (!token) {
   throw new Error("No token found");
 }
 
-export const clientWorkOrders = async (page: number): Promise<IWorkOrder[]> => {
-  const token = getToken();
-  if (!token) {
-    throw new Error("No token found");
-  }
-
+export const clientWorkOrders = async (
+  page: number
+): Promise<WOPagedResponse<IWorkOrder>> => {
   const decodedToken = decodeToken(token);
   if (!decodedToken || !decodedToken.sub) {
     throw new Error("Invalid token");
   }
 
   const orgId = decodedToken.orgId;
-  return axios.get(`${API_BASE_URL}/client/${orgId}/?pageNum=${page}`, {
+  const response = axios.get(`${API_BASE_URL}/client/${orgId}?pageNum=${page}`, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      "Content-Type": "application/json",
       Authorization: token ? `Bearer ${token}` : "",
     },
   });
+  return (await response).data;
 };
 
 export const createWorkOrder = async (

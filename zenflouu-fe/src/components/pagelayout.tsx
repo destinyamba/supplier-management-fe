@@ -16,8 +16,9 @@ import {
   UsersFour,
   UsersThree,
 } from "@phosphor-icons/react";
-import { SideBar } from "xarton-1";
+// import { SideBar } from "xarton-1";
 import ClientOnly from "./ClientOnly/ClientOnly";
+import { SideBar } from "./SideBar/SideBar";
 
 export default function PageLayout({
   children,
