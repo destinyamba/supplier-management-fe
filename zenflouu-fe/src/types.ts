@@ -1,3 +1,5 @@
+import { green, blue, red, grey } from "@mui/material/colors";
+
 export interface ISupplierCard {
   contractType: IContractType;
   supplierName: string;
@@ -163,3 +165,31 @@ export interface Region {
   country: string;
   abbreviation: string;
 }
+
+
+export const getStatusConfig = (status: string) => {
+  const mappedStatus = mapWorkOrderStatus(status);
+
+  switch (mappedStatus) {
+    case WorkOrderStatus.COMPLETED:
+      return {
+        backgroundColor: green[100],
+        borderColor: green[200],
+      };
+    case WorkOrderStatus.IN_PROGRESS:
+      return {
+        backgroundColor: blue[100],
+        borderColor: blue[200],
+      };
+    case WorkOrderStatus.CANCELLED:
+      return {
+        backgroundColor: red[100],
+        borderColor: red[200],
+      };
+    default:
+      return {
+        backgroundColor: grey[100],
+        borderColor: grey[200],
+      };
+  }
+};

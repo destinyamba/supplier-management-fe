@@ -1,6 +1,6 @@
-import { IWorkOrder, mapWorkOrderStatus, WorkOrderStatus } from "@/types";
+import { getStatusConfig, IWorkOrder, mapWorkOrderStatus } from "@/types";
 import { Card, CardContent, Box, Typography, Grid2 } from "@mui/material";
-import { green, red, blue, grey } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 import React from "react";
 import { StatusChip } from "xarton-1";
 
@@ -13,49 +13,25 @@ const WorkOrderCard: React.FC<WorkOrderCardProps> = ({
   return (
     <>
       {" "}
-      <Grid2 size={{ md: 12 }}>
+      <Grid2 size={{ md: 12 }} minWidth={390}>
         <Card sx={{ boxShadow: 1, borderRadius: 2, m: 0 }}>
           <CardContent>
-            <Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Typography variant="h6" fontWeight={600} sx={{ mb: 1 }}>
-                  {/* worOrderNumber */}
-                  {workOrders.workOrderNumber}
-                </Typography>
-                <StatusChip
-                  label={mapWorkOrderStatus(workOrders?.status)}
-                  bgcolor={
-                    mapWorkOrderStatus(workOrders?.status) ===
-                    WorkOrderStatus.COMPLETED
-                      ? green[100]
-                      : mapWorkOrderStatus(workOrders?.status) ===
-                        WorkOrderStatus.IN_PROGRESS
-                      ? blue[100]
-                      : mapWorkOrderStatus(workOrders?.status) ===
-                        WorkOrderStatus.CANCELLED
-                      ? red[100]
-                      : grey[100]
-                  }
-                  borderColor={
-                    mapWorkOrderStatus(workOrders?.status) ===
-                    WorkOrderStatus.COMPLETED
-                      ? green[200]
-                      : mapWorkOrderStatus(workOrders?.status) ===
-                        WorkOrderStatus.IN_PROGRESS
-                      ? blue[200]
-                      : mapWorkOrderStatus(workOrders?.status) ===
-                        WorkOrderStatus.CANCELLED
-                      ? red[200]
-                      : grey[200]
-                  }
-                />
-              </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Typography variant="h6" fontWeight={600} sx={{ mb: 1 }}>
+                {/* worOrderNumber */}
+                {workOrders.workOrderNumber}
+              </Typography>
+              <StatusChip
+                label={mapWorkOrderStatus(workOrders?.status)}
+                bgcolor={getStatusConfig(workOrders.status).backgroundColor}
+                borderColor={getStatusConfig(workOrders.status).borderColor}
+              />
             </Box>
 
             <Box

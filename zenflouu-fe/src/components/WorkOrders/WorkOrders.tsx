@@ -15,6 +15,7 @@ import { IWorkOrder } from "@/types";
 import WorkOrderCard from "../WorkOrderCard/WorkOrderCard";
 import { CreateWorkOrderDialog } from "../CreateWorkOrderDialog/CreateWorkOrderDialog";
 import { clientWorkOrders } from "@/apis/workOrdersService";
+import Link from "next/link";
 
 export const WorkOrders = () => {
   const [totalPages, setTotalPages] = useState<number>(0);
@@ -44,7 +45,6 @@ export const WorkOrders = () => {
       try {
         const pageData = await clientWorkOrders(page);
         setWorkOrders(pageData.wos);
-        console.log(pageData);
         setTotalPages(pageData.totalPages);
       } catch (error) {
         setError(error instanceof Error ? error.message : String(error));
@@ -104,28 +104,27 @@ export const WorkOrders = () => {
         showFilter={false}
       />
       {/* List of work orders */}
-      <Grid2 container spacing={2} flexDirection="column" mx={2} mt={2}>
-        <Grid2 container spacing={2}>
-          {workOrders.map((workOrder, index) => (
-            <Grid2
-              size={4}
-              key={`workOrder-${workOrder.workOrderNumber}-${index}`}
-              sx={{ display: "flex", flexDirection: "row" }}
-            >
+      <Grid2 container spacing={2} mx={3.5} mt={2}>
+        {workOrders.map((workOrder, index) => (
+          <Grid2
+            key={`workOrder-${workOrder.workOrderNumber}-${index}`}
+            sx={{ display: "flex", flexDirection: "row" }}
+          >
+            <Link href={`/work-orders/${workOrder.id}`}>
               <WorkOrderCard workOrders={workOrder} />
-            </Grid2>
-          ))}
-        </Grid2>
-        {/* Pagination */}
-        <Grid2 m={2} display="flex" justifyContent="end">
-          <Pagination
-            page={page}
-            count={totalPages}
-            onChange={handlePageChange}
-            variant="outlined"
-            color="primary"
-          />
-        </Grid2>
+            </Link>
+          </Grid2>
+        ))}
+      </Grid2>
+      {/* Pagination */}
+      <Grid2 m={2} display="flex" justifyContent="end">
+        <Pagination
+          page={page}
+          count={totalPages}
+          onChange={handlePageChange}
+          variant="outlined"
+          color="primary"
+        />
       </Grid2>
     </>
   );
