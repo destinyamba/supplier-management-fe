@@ -13,9 +13,21 @@ export const signup = async (userData: {
   return response;
 };
 
-export const signin = async (userData: { email: string; password: string }) => {
+export const signin = async (
+  userData: { email: string; password: string },
+  setToken: (token: { businessType: string } | null) => void
+) => {
   const response = await axios.post(`${API_BASE_URL}/signin`, userData);
-  localStorage.setItem("authToken", response.data.token);
+  const authToken = response.data.token;
+  localStorage.setItem("authToken", JSON.stringify(authToken));
+
+  try {
+    const decodedToken = JSON.parse(atob(authToken.split(".")[1]));
+    setToken({ businessType: decodedToken.businessType });
+  } catch (error) {
+    console.error("Error decoding auth token:", error);
+  }
+
   return response;
 };
 

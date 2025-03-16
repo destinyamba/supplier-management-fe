@@ -19,8 +19,8 @@ import { signin } from "@/apis/authService";
 import axios from "axios";
 import Image from "next/image";
 import { Alert, Snackbar } from "@mui/material";
-import { error } from "console";
 import { useState } from "react";
+import { useAuth } from "@/components/AuthContext/AuthContext";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -46,6 +46,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignIn() {
+  const { token, setToken } = useAuth();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const formik = useFormik({
@@ -62,8 +63,11 @@ export default function SignIn() {
     onSubmit: async (values, { setSubmitting, setErrors }) => {
       try {
         setError(null);
-        await signin(values);
-        router.push("/dashboard");
+        await signin(values, setToken);
+        console.log("token: ", token);
+        token?.businessType === "CLIENT"
+          ? router.push("/dashboard")
+          : router.push("/clients");
       } catch (error) {
         setError("Invalid credentials. Please try again.");
         if (axios.isAxiosError(error)) {
@@ -81,7 +85,7 @@ export default function SignIn() {
 
   return (
     <>
-    <title>ZenFlouu | Sign In</title>
+      <title>ZenFlouu | Sign In</title>
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="center">
         <Snackbar
