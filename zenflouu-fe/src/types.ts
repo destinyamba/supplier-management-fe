@@ -123,6 +123,7 @@ export interface IWorkOrder {
   projectManager: string;
   workOrderNumber: string;
   taskDescription: string;
+  service: string;
 }
 
 export interface WOPagedResponse<T> {
@@ -166,6 +167,10 @@ export interface Region {
   abbreviation: string;
 }
 
+export interface Service {
+  name: string;
+  category: string;
+}
 
 export const getStatusConfig = (status: string) => {
   const mappedStatus = mapWorkOrderStatus(status);

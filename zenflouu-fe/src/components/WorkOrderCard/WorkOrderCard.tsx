@@ -59,6 +59,21 @@ const WorkOrderCard: React.FC<WorkOrderCardProps> = ({
                 my: 2,
               }}
             >
+              <Typography variant="subtitle2">Service: </Typography>
+              <Typography variant="subtitle2">
+                {workOrders?.service}{" "}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                backgroundColor: grey[100],
+                p: 2,
+                borderRadius: 2,
+                display: "flex",
+                justifyContent: "space-between",
+                my: 2,
+              }}
+            >
               <Typography variant="subtitle2">Stat Date: </Typography>
               <Typography variant="subtitle2">
                 {workOrders?.startDate?.toString()}

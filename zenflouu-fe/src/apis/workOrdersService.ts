@@ -106,4 +106,13 @@ export const cancelWorkOrder = async (id: string): Promise<IWorkOrder> => {
     },
   });
   return (await response).data;
-}
+};
+
+export const listOfServices = async () => {
+  return axios.get(`${API_BASE_URL}/services`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+  });
+};

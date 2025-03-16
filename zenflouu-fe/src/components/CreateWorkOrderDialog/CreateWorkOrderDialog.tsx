@@ -1,5 +1,9 @@
 "use client";
-import { createWorkOrder, listOfLocations } from "@/apis/workOrdersService";
+import {
+  createWorkOrder,
+  listOfLocations,
+  listOfServices,
+} from "@/apis/workOrdersService";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {
   Alert,
@@ -25,7 +29,7 @@ import dayjs from "dayjs";
 import { date, object, string } from "yup";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { Region } from "@/types";
+import { Region, Service } from "@/types";
 
 interface CreateWorkOrderDialogProps {
   open: boolean;
@@ -38,11 +42,14 @@ export const CreateWorkOrderDialog = ({
   const [error, setError] = useState<string | null>(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [locations, setLocations] = useState<Region[]>([]);
+  const [services, setServices] = useState<Service[]>([]);
 
   const fetchLocations = async () => {
     try {
       const response = await listOfLocations();
+      const services = await listOfServices();
       setLocations(response.data);
+      setServices(services.data);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setError(error.response?.data?.message);
@@ -58,12 +65,14 @@ export const CreateWorkOrderDialog = ({
       dueDate: dayjs(),
       startDate: dayjs(),
       taskDescription: "",
+      service: "",
     },
     validationSchema: object({
       location: string().required("Required"),
       dueDate: date().required("Required"),
       startDate: date().required("Required"),
       taskDescription: string().required("Required"),
+      service: string().required("Required"),
     }),
     onSubmit: async (values, { setSubmitting, setErrors }) => {
       try {
@@ -161,7 +170,6 @@ export const CreateWorkOrderDialog = ({
                 labelId="location"
                 id="location"
                 value={formik.values.location}
-                // onChange={formik.handleChange}
                 onChange={(event) => {
                   formik.setFieldValue("location", event.target.value);
                 }}
@@ -173,6 +181,26 @@ export const CreateWorkOrderDialog = ({
                 {locations.map((location) => (
                   <MenuItem key={location.abbreviation} value={location.name}>
                     {location.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControl>
+              <InputLabel id="service">Service</InputLabel>
+              <Select
+                labelId="service"
+                id="service"
+                value={formik.values.service}
+                onChange={(event) => {
+                  formik.setFieldValue("service", event.target.value);
+                }}
+                onBlur={formik.handleBlur}
+                error={formik.touched.service && Boolean(formik.errors.service)}
+              >
+                {services.map((service) => (
+                  <MenuItem key={service.name} value={service.name}>
+                    {service.name}
                   </MenuItem>
                 ))}
               </Select>

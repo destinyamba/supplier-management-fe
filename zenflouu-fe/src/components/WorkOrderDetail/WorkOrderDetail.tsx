@@ -113,6 +113,9 @@ export const WorkOrderDetail = () => {
                 Location: {workOrder.location}
               </Typography>
               <Typography variant="body1">
+                Service: {workOrder.service}
+              </Typography>
+              <Typography variant="body1">
                 Due Date: {new Date(workOrder.dueDate).toLocaleDateString()}
               </Typography>
               <Typography variant="body1">
