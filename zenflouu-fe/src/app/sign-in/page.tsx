@@ -20,7 +20,7 @@ import axios from "axios";
 import Image from "next/image";
 import { Alert, Snackbar } from "@mui/material";
 import { useState } from "react";
-import { useAuth } from "@/components/AuthContext/AuthContext";
+import { decodeToken } from "@/apis/userManagementService";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -46,7 +46,6 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignIn() {
-  const { token, setToken } = useAuth();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const formik = useFormik({
@@ -63,9 +62,9 @@ export default function SignIn() {
     onSubmit: async (values, { setSubmitting, setErrors }) => {
       try {
         setError(null);
-        await signin(values, setToken);
-        console.log("token: ", token);
-        token?.businessType === "CLIENT"
+        const token = await signin(values);
+        const businessType = decodeToken(token.data.token).businessType;
+        businessType === "CLIENT"
           ? router.push("/dashboard")
           : router.push("/clients");
       } catch (error) {

@@ -1,5 +1,4 @@
 import axios from "axios";
-// import { decodeToken } from "./userManagementService";
 import { ICreateWorkOrder, IWorkOrder, WOPagedResponse } from "@/types";
 
 const API_BASE_URL = "http://localhost:6060/api/v1/work-order";
@@ -18,7 +17,7 @@ export const getToken = () => {
 
   return token;
 };
-
+const token = getToken();
 const decodeToken = (token: any) => {
   try {
     const base64Url = token.split(".")[1]; // Get the payload
@@ -35,7 +34,7 @@ const decodeToken = (token: any) => {
     return null;
   }
 };
-const token = getToken();
+
 export const clientWorkOrders = async (
   page: number
 ): Promise<WOPagedResponse<IWorkOrder>> => {
@@ -115,4 +114,21 @@ export const listOfServices = async () => {
       Authorization: token ? `Bearer ${token}` : "",
     },
   });
+};
+
+export const supplierMatchWorkOrders = async (
+  page: number
+): Promise<WOPagedResponse<IWorkOrder>> => {
+  const decodedToken = decodeToken(token);
+  const supplierId = decodedToken.orgId;
+  const response = axios.get(
+    `${API_BASE_URL}/supplier/${supplierId}?pageNum=${page}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    }
+  );
+  return (await response).data;
 };

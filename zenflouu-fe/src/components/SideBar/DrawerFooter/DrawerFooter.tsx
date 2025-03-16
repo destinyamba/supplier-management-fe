@@ -10,9 +10,9 @@ import {
 } from "@mui/material";
 import { Building, Gear as GearIcon } from "@phosphor-icons/react";
 import React from "react";
-import { AdditionalMenuItem, Organization } from "../../interfaces/types";
 import { grey } from "@mui/material/colors";
 import { CustomListItem } from "../CustomListItem/CustomListItem";
+import { AdditionalMenuItem, Organization } from "../SideBar";
 
 interface DrawerFooterProps {
   organisationName: string;

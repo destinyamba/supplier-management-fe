@@ -16,10 +16,8 @@ import {
   UsersFour,
   UsersThree,
 } from "@phosphor-icons/react";
-// import { SideBar } from "xarton-1";
 import ClientOnly from "./ClientOnly/ClientOnly";
 import { SideBar } from "./SideBar/SideBar";
-import { useAuth } from "./AuthContext/AuthContext";
 
 export default function PageLayout({
   children,
@@ -28,7 +26,6 @@ export default function PageLayout({
   children: React.ReactNode;
   showSideBar?: boolean;
 }>) {
-  const { logout } = useAuth();
   const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [user, setUser] = useState<User | null>(null);
@@ -95,7 +92,7 @@ export default function PageLayout({
       icon: <SignOut size={24} />,
       href: "/",
       onClick: () => {
-        logout();
+        localStorage.removeItem("authToken");
         router.push("/");
       },
     },

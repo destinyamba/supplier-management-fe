@@ -1,15 +1,15 @@
-import { Grid2 } from "@mui/material";
-import Layout from "../layout";
+import Clients from "@/components/Clients/Clients";
 import PageLayout from "@/components/pagelayout";
 
-const Client = () => {
+const ClientPage = () => {
   return (
     <>
+      <title>ZenFlouu | Clients </title>
       <PageLayout showSideBar={true}>
-        <Grid2 container>{/* Add your content here */}This is my client</Grid2>
+        <Clients />
       </PageLayout>
     </>
   );
 };
 
-export default Client;
+export default ClientPage;
