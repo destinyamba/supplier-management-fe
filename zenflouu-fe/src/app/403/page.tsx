@@ -23,7 +23,7 @@ const Forbidden: React.FC = () => {
       <Button
         variant="contained"
         color="primary"
-        onClick={() => router.push("/")}
+        onClick={() => router.push("/sign-in")}
         sx={{ mt: 2 }}
       >
         Go to Home
