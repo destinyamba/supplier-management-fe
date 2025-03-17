@@ -10,6 +10,7 @@ import {
   mapContractType,
   mapWorkStatus,
   mappedRequirementsStatus,
+  getContractTypeColor,
 } from "@/types";
 import { StatusChip } from "xarton-1";
 
@@ -20,17 +21,6 @@ interface SupplierCardProps {
 export const SupplierCard: React.FC<SupplierCardProps> = ({
   suppliers,
 }: SupplierCardProps) => {
-  const getContractTypeColor = (contractType: IContractType) => {
-    switch (contractType) {
-      case IContractType.DIRECT:
-        return "#399af3";
-      case IContractType.SUBCONTRACTED:
-        return "#37b94d";
-      case IContractType.NO_CONTRACT:
-      default:
-        return grey[500];
-    }
-  };
   return (
     <>
       <Stack>
