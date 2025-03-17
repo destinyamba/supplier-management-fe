@@ -1,4 +1,5 @@
 import { Box, Typography } from "@mui/material";
+import Image from "next/image";
 import React from "react";
 interface DrawerHeaderProps {
   ismobile: boolean;
@@ -20,15 +21,15 @@ export const DrawerHeader: React.FC<DrawerHeaderProps> = ({
       >
         {/* App Logo */}
         {!ismobile && isOpen ? (
-          <img
-            src="zenflouu-logo.svg"
+          <Image
+            src="/zenflouu-logo.svg"
             alt="ZenFlouu Logo"
             width={240}
             height={50}
           />
         ) : (
-          <img
-            src="zenflouu_black_logo.png"
+          <Image
+            src="/zenflouu_black_logo.png"
             alt="ZenFlouu Logo"
             width={50}
             height={35}
