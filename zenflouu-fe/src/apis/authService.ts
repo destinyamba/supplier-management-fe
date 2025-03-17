@@ -16,6 +16,7 @@ export const signup = async (userData: {
 export const signin = async (userData: { email: string; password: string }) => {
   const response = await axios.post(`${API_BASE_URL}/signin`, userData);
   localStorage.setItem("authToken", response.data.token);
+  document.cookie = `authToken=${response.data.token}; path=/; max-age=3600`;
   return response;
 };
 

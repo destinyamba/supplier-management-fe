@@ -399,6 +399,7 @@ export function Footer() {
 export default function MarketingPage() {
   return (
     <>
+      <title>ZenFlouu | Home</title>
       <CssBaseline />
       <AppAppBar />
       <main>
