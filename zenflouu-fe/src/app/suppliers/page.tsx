@@ -1,7 +1,7 @@
+"use client";
 import React from "react";
-import ApprovedSupplierList from "@/components/ApprovedSuppliersList/ApprovedSupplierList";
+import { ApprovedSupplierList } from "@/components/ApprovedSuppliersList/ApprovedSupplierList";
 import PageLayout from "../../components/pagelayout";
-import Head from "next/head";
 
 const Suppliers = () => {
   return (

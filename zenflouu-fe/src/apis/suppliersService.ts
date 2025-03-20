@@ -29,3 +29,19 @@ export const getSupplierById = async () => {
     },
   });
 };
+
+export const nlpSearchSuppliers = async (
+  query: string,
+  pageNum: number,
+  pageSize: number
+) => {
+  const token = getToken();
+  return axios.get(
+    `${API_BASE_URL}/nlp/search?query=${query}&pageNum=${pageNum}&pageSize=${pageSize}`,
+    {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    }
+  );
+};
