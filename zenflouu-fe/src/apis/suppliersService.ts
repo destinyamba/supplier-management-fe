@@ -45,3 +45,14 @@ export const nlpSearchSuppliers = async (
     }
   );
 };
+
+export const getASupplier = async (id: string) => {
+  const token = getToken();
+  const orgId = decodeToken(token).orgId;
+  return axios.get(`${API_BASE_URL}/${id}`, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+  });
+};

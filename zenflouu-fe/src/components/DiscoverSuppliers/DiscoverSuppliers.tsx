@@ -1,6 +1,6 @@
 import { getAllSuppliers, nlpSearchSuppliers } from "@/apis/suppliersService";
 import { ISupplierCard } from "@/types";
-import { Grid2, Pagination, Typography } from "@mui/material";
+import { Grid2, Link, Pagination, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { SupplierCard } from "../SupplierCard/SupplierCard";
 import SearchBar from "../SearchBar/SearchBar";
@@ -15,21 +15,14 @@ export const DiscoverSuppliers = () => {
   useEffect(() => {
     const fetchSuppliers = async () => {
       try {
-        const response = await getAllSuppliers(page);
-        if (Array.isArray(response.data.suppliers)) {
-          setSuppliers(response.data.suppliers);
-          setTotalPages(response.data.totalPages);
+        let response;
+        // Only use search API if there's a query, otherwise use default getAllSuppliers
+        if (query.trim()) {
+          response = await nlpSearchSuppliers(query, page, pageSize);
         } else {
-          console.error("Response data is not an array:", response.data);
+          response = await getAllSuppliers(page);
         }
-      } catch (error) {
-        console.error("Error fetching user details:", error);
-      }
-    };
 
-    const searchSuppliers = async () => {
-      try {
-        const response = await nlpSearchSuppliers(query, page, pageSize);
         if (Array.isArray(response.data.suppliers)) {
           setSuppliers(response.data.suppliers);
           setTotalPages(response.data.totalPages);
@@ -37,12 +30,13 @@ export const DiscoverSuppliers = () => {
           console.error("Response data is not an array:", response.data);
         }
       } catch (error) {
-        console.error("Error fetching user details:", error);
+        console.error("Error fetching suppliers:", error);
       }
     };
 
     fetchSuppliers();
-    searchSuppliers();
+
+    fetchSuppliers();
   }, [page, query]);
 
   const handleSearch = (searchQuery: string) => {
@@ -58,7 +52,7 @@ export const DiscoverSuppliers = () => {
   };
   return (
     <Grid2 container spacing={2} flexDirection="column" mx={2}>
-      <Typography variant="h4" fontWeight={600} mx={1} mt={2}>
+      <Typography variant="h4" fontWeight={600} mt={2}>
         Discover Suppliers
       </Typography>
       <SearchBar
@@ -73,7 +67,12 @@ export const DiscoverSuppliers = () => {
             key={`supplier-${supplier.supplierName}-${index}`}
             sx={{ display: "flex", flexDirection: "row" }}
           >
-            <SupplierCard suppliers={supplier} />
+            <Link
+              href={`/discover/${supplier.id}`}
+              sx={{ textDecoration: "none" }}
+            >
+              <SupplierCard suppliers={supplier} />
+            </Link>
           </Grid2>
         ))}
       </Grid2>

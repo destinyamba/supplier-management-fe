@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import { Plus } from "@phosphor-icons/react";
 import React, { useEffect, useState } from "react";
-import SearchBar from "../SearchBar/SearchBar";
 import { IWorkOrder } from "@/types";
 import WorkOrderCard from "../WorkOrderCard/WorkOrderCard";
 import { CreateWorkOrderDialog } from "../CreateWorkOrderDialog/CreateWorkOrderDialog";
@@ -60,7 +59,7 @@ export const WorkOrders = () => {
       {/* Title and create work order button */}
       <Stack
         sx={{
-          mx: 1,
+          mx: 2,
           display: "flex",
           justifyContent: "space-between",
           flexDirection: "row",
@@ -97,12 +96,6 @@ export const WorkOrders = () => {
           onClose={handleDialogClose}
         />
       </Stack>
-      {/* Search bar by work order number*/}
-      <SearchBar
-        placeholder={"Search by Work Order Number"}
-        height={40}
-        showFilter={false}
-      />
       {/* List of work orders */}
       <Grid2 container spacing={2} mx={3.5} mt={2}>
         {workOrders.map((workOrder, index) => (

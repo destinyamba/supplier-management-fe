@@ -1,10 +1,19 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import SearchBar from "../SearchBar/SearchBar";
-import { Grid2, Pagination, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid2,
+  Pagination,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { getAllSuppliers, nlpSearchSuppliers } from "@/apis/suppliersService";
 import { ISupplierCard } from "@/types";
 import { SupplierCard } from "../SupplierCard/SupplierCard";
+import { Plus } from "@phosphor-icons/react";
+import { getClientSuppliers } from "@/apis/clientService";
 
 export const ApprovedSupplierList = () => {
   const [suppliers, setSuppliers] = useState<ISupplierCard[]>([]);
@@ -21,7 +30,7 @@ export const ApprovedSupplierList = () => {
         if (query.trim()) {
           response = await nlpSearchSuppliers(query, page, pageSize);
         } else {
-          response = await getAllSuppliers(page);
+          response = await getClientSuppliers(page);
         }
 
         if (Array.isArray(response.data.suppliers)) {
@@ -51,34 +60,60 @@ export const ApprovedSupplierList = () => {
   };
   return (
     <>
-      <Stack mx={2} spacing={2}>
-        {/* Title and button to add a add from discoverable suppliers */}
-        <Stack>
-          <Typography variant="h4" fontWeight={600} mx={1} mt={2}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+        }}
+      >
+        {/* Title and create work order button */}
+        <Stack
+          sx={{
+            mx: 0,
+            display: "flex",
+            justifyContent: "space-between",
+            flexDirection: "column",
+          }}
+        >
+          <Typography variant="h4" fontWeight={600} m={2}>
             Approved Supplier List
           </Typography>
         </Stack>
         {/* Search bar with at the side and selected filter options show at the bottom of the bar */}
-        <SearchBar
-          placeholder={"Find minority owned suppliers"}
-          height={40}
-          onSearch={handleSearch}
-        />
-        {/* cards of approved suppliers */}
-        <Grid2 container spacing={2}>
-          {suppliers.map((supplier, index) => (
-            <Grid2
-              size={4}
-              key={`supplier-${supplier.supplierName}-${index}`}
-              sx={{ display: "flex", flexDirection: "row" }}
-            >
-              <SupplierCard suppliers={supplier} />
-            </Grid2>
-          ))}
-        </Grid2>
+
+        <Box sx={{ mx: 2 }}>
+          <SearchBar
+            placeholder={"Find minority owned suppliers"}
+            height={40}
+            onSearch={handleSearch}
+          />
+        </Box>
+        {/* List of work orders */}
+        <Box sx={{ flex: 1 }}>
+          <Grid2 container spacing={2} mx={2} mt={2}>
+            {suppliers.map((supplier, index) => (
+              <Grid2
+                size={4}
+                key={`supplier-${supplier.supplierName}-${index}`}
+                sx={{ display: "flex", flexDirection: "row" }}
+              >
+                <SupplierCard suppliers={supplier} />
+              </Grid2>
+            ))}
+          </Grid2>
+        </Box>
 
         {/* Pagination */}
-        <Grid2 m={2} display="flex" justifyContent="end">
+        <Box
+          sx={{
+            py: 2,
+            px: 2,
+            display: "flex",
+            justifyContent: "flex-end",
+            mt: "auto",
+          }}
+        >
           <Pagination
             page={page}
             count={totalPages}
@@ -86,8 +121,8 @@ export const ApprovedSupplierList = () => {
             variant="outlined"
             color="primary"
           />
-        </Grid2>
-      </Stack>
+        </Box>
+      </Box>
     </>
   );
 };

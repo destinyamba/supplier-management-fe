@@ -1,6 +1,7 @@
 import { green, blue, red, grey } from "@mui/material/colors";
 
 export interface ISupplierCard {
+  id: string;
   contractType: IContractType;
   supplierName: string;
   workStatus: IWorkStatus;
@@ -29,9 +30,9 @@ export enum IContractType {
 
 export const mapContractType = (contractType: string): IContractType => {
   switch (contractType) {
-    case "Direct":
+    case "DIRECT":
       return IContractType.DIRECT;
-    case "Subcontracted":
+    case "SUBCONTRACTED":
       return IContractType.SUBCONTRACTED;
     case "NO_CONTRACT":
     default:
@@ -201,9 +202,9 @@ export const getStatusConfig = (status: string) => {
 
 export const getContractTypeColor = (contractType: IContractType) => {
   switch (contractType) {
-    case IContractType.DIRECT:
+    case IContractType.DIRECT.toLocaleUpperCase():
       return "#399af3";
-    case IContractType.SUBCONTRACTED:
+    case IContractType.SUBCONTRACTED.toLocaleUpperCase():
       return "#37b94d";
     case IContractType.NO_CONTRACT:
     default:
