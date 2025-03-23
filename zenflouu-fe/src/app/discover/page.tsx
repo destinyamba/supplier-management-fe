@@ -3,7 +3,7 @@ import React from "react";
 import { DiscoverSuppliers } from "@/components/DiscoverSuppliers/DiscoverSuppliers";
 import PageLayout from "@/components/pagelayout";
 
-const Dashboard = () => {
+const DiscoverPage = () => {
   return (
     <>
       <title>ZenFlouu | Discover</title>
@@ -14,4 +14,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DiscoverPage;

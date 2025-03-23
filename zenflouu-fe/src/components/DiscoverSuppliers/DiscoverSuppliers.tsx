@@ -1,3 +1,4 @@
+"use client";
 import { getAllSuppliers, nlpSearchSuppliers } from "@/apis/suppliersService";
 import { ISupplierCard } from "@/types";
 import { Grid2, Link, Pagination, Typography } from "@mui/material";

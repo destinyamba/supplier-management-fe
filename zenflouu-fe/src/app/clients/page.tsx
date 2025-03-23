@@ -1,3 +1,4 @@
+"use client";
 import Clients from "@/components/Clients/Clients";
 import PageLayout from "@/components/pagelayout";
 

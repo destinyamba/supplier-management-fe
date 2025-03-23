@@ -1,3 +1,4 @@
+"use client";
 import { getStatusConfig, IWorkOrder, mapWorkOrderStatus } from "@/types";
 import { Card, CardContent, Box, Typography, Grid2 } from "@mui/material";
 import { grey } from "@mui/material/colors";

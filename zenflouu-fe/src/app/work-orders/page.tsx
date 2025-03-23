@@ -1,3 +1,4 @@
+"use client"
 import PageLayout from "@/components/pagelayout";
 import { WorkOrders } from "@/components/WorkOrders/WorkOrders";
 import React from "react";

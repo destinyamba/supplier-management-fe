@@ -1,3 +1,4 @@
+"use client"
 import { Box, Card, CardContent, Stack, Typography } from "@mui/material";
 import React from "react";
 import { SealCheck as SealCheckIcon } from "@phosphor-icons/react";

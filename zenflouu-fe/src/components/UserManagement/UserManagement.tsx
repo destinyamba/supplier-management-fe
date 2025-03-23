@@ -1,3 +1,4 @@
+"use client";
 import {
   getUserAssociatedOrgs,
   inviteUserInitial,
@@ -10,8 +11,6 @@ import {
   Typography,
   Button,
   Stack,
-  Dialog,
-  TextField,
 } from "@mui/material";
 import axios, { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
@@ -72,7 +71,7 @@ export const UserManagement = ({ user }: { user: User }) => {
       }
     };
     fetchListOfUsers();
-  });
+  }, []);
   return (
     <Stack>
       <Snackbar

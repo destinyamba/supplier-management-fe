@@ -1,18 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import SearchBar from "../SearchBar/SearchBar";
-import {
-  Box,
-  Button,
-  Grid2,
-  Pagination,
-  Stack,
-  Typography,
-} from "@mui/material";
-import { getAllSuppliers, nlpSearchSuppliers } from "@/apis/suppliersService";
+import { Box, Grid2, Pagination, Stack, Typography } from "@mui/material";
+import { nlpSearchSuppliers } from "@/apis/suppliersService";
 import { ISupplierCard } from "@/types";
 import { SupplierCard } from "../SupplierCard/SupplierCard";
-import { Plus } from "@phosphor-icons/react";
 import { getClientSuppliers } from "@/apis/clientService";
 
 export const ApprovedSupplierList = () => {
