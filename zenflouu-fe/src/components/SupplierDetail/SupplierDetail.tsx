@@ -2,7 +2,13 @@
 import { addSupplierToList, getClientSuppliers } from "@/apis/clientService";
 import { getASupplier } from "@/apis/suppliersService";
 import { getUserDetails } from "@/apis/userManagementService";
-import { ISupplierCard, User } from "@/types";
+import {
+  ISupplierCard,
+  mapContractType,
+  mappedRequirementsStatus,
+  mapWorkStatus,
+  User,
+} from "@/types";
 import {
   Breadcrumbs,
   Typography,
@@ -21,6 +27,12 @@ import {
   Select,
   Alert,
   Snackbar,
+  Card,
+  CardContent,
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
 } from "@mui/material";
 import { Plus } from "@phosphor-icons/react";
 import * as Yup from "yup";
@@ -28,6 +40,8 @@ import { useFormik } from "formik";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { green, red, blue, grey } from "@mui/material/colors";
+import { StatusChip } from "xarton-1";
 
 export const SupplierDetail = () => {
   const [supplier, setSupplier] = useState<ISupplierCard | null>(null);
@@ -232,6 +246,153 @@ export const SupplierDetail = () => {
             </>
           ) : null}
         </Box>
+        <Stack
+          spacing={1}
+          direction="row"
+          useFlexGap
+          sx={{ flexWrap: "wrap", mt: 2 }}
+        >
+          <Box sx={{ p: 4 }}>
+            {supplier && (
+              <>
+                <Card sx={{ mb: 4, borderRadius: 2, boxShadow: 3 }}>
+                  <CardContent>
+                    <Stack direction="row" spacing={2} mb={2}>
+                      <StatusChip
+                        label={mapWorkStatus(supplier.workStatus)}
+                        bgcolor={
+                          mapWorkStatus(supplier.workStatus) === "Approved"
+                            ? green[100]
+                            : red[100]
+                        }
+                        borderColor={
+                          mapWorkStatus(supplier.workStatus) === "Approved"
+                            ? green[200]
+                            : red[200]
+                        }
+                      />
+                      <StatusChip
+                        label={mappedRequirementsStatus(
+                          supplier.requirementsStatus
+                        )}
+                        bgcolor={
+                          mappedRequirementsStatus(
+                            supplier.requirementsStatus
+                          ) === "Requirements Submitted"
+                            ? blue[100]
+                            : grey[100]
+                        }
+                        borderColor={
+                          mappedRequirementsStatus(
+                            supplier.requirementsStatus
+                          ) === "Requirements Submitted"
+                            ? blue[200]
+                            : grey[200]
+                        }
+                      />
+                    </Stack>
+                    <Typography variant="body1" color={grey[700]}>
+                      Contract Type: {mapContractType(supplier.contractType)}
+                    </Typography>
+                  </CardContent>
+                </Card>
+
+                <Paper sx={{ p: 3, mb: 4, borderRadius: 2 }}>
+                  <Typography variant="h6" fontWeight={600} mb={2}>
+                    Business Information
+                  </Typography>
+                  <List>
+                    <ListItem>
+                      <ListItemText
+                        primary="Years of Operation"
+                        secondary={supplier.yearsOfOperation}
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="Revenue"
+                        secondary={supplier.revenue}
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="Number of Employees"
+                        secondary={supplier.numberOfEmployees}
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="States"
+                        secondary={supplier.states.join(", ")}
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="Services"
+                        secondary={supplier.services.join(", ")}
+                      />
+                    </ListItem>
+                  </List>
+                </Paper>
+
+                <Paper sx={{ p: 3, borderRadius: 2 }}>
+                  <Typography variant="h6" fontWeight={600} mb={2}>
+                    Safety and Compliance
+                  </Typography>
+                  <List>
+                    <ListItem>
+                      <ListItemText
+                        primary="TRIR (Total Recordable Incident Rate)"
+                        secondary={supplier.safetyAndCompliance?.trir}
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="EMR (Experience Modifier Rate)"
+                        secondary={supplier.safetyAndCompliance?.emr}
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="COI (Certificate of Insurance)"
+                        secondary={
+                          supplier.safetyAndCompliance?.coi || "Not Provided"
+                        }
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="Safety Program"
+                        secondary={
+                          supplier.safetyAndCompliance?.safetyProgram ||
+                          "Not Provided"
+                        }
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="OSHA Logs"
+                        secondary={
+                          supplier.safetyAndCompliance?.oshaLogs ||
+                          "Not Provided"
+                        }
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="Bank Info"
+                        secondary={
+                          supplier.safetyAndCompliance?.bankInfo ||
+                          "Not Provided"
+                        }
+                      />
+                    </ListItem>
+                  </List>
+                </Paper>
+              </>
+            )}
+          </Box>
+        </Stack>
       </Stack>
     </>
   );

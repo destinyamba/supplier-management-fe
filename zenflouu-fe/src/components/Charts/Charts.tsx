@@ -216,7 +216,7 @@ export const WorkOrderStatusChart: React.FC<WorkOrderStatusProps> = ({
             {
               scaleType: "band",
               categoryGapRatio: 0.5,
-              data: ["Pending", "In Progress", "Completed", "Cancelled"],
+              data: ["Pending", "Completed", "In Progress", "Cancelled"],
             },
           ] as any
         }

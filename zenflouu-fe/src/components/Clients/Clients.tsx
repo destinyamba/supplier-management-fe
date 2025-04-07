@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import WorkOrderCard from "../WorkOrderCard/WorkOrderCard";
+import Link from "next/link";
 
 const Clients = () => {
   const [totalPages, setTotalPages] = useState<number>(0);
@@ -87,7 +88,9 @@ const Clients = () => {
                 key={`workOrder-${workOrder.workOrderNumber}-${index}`}
                 sx={{ display: "flex", flexDirection: "row" }}
               >
-                <WorkOrderCard workOrders={workOrder} />
+                <Link href={`/work-orders/${workOrder.id}`}>
+                  <WorkOrderCard workOrders={workOrder} />
+                </Link>
               </Grid2>
             ))}
           </Grid2>

@@ -132,3 +132,21 @@ export const supplierMatchWorkOrders = async (
   );
   return (await response).data;
 };
+
+export const updateWorkOrderStatus = async (
+  id: string,
+  status: string
+): Promise<IWorkOrder> => {
+  const token = getToken();
+  const response = await axios.put(
+    `${API_BASE_URL}/update/status?workOrderId=${id}&newStatus=${status}`,
+    {},
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    }
+  );
+  return response.data;
+};
