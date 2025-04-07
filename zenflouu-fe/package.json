@@ -27,6 +27,7 @@
     "yup": "^1.6.1"
   },
   "devDependencies": {
+    "@cypress/react": "^9.0.1",
     "@eslint/eslintrc": "^3",
     "@types/node": "^20.17.16",
     "@types/react": "^19.0.8",
